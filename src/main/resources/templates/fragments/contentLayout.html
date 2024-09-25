@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script>
+    $(function() {
+        let prefix = '/assets/js';
+        let suffix = '.js';
+        let page = location.pathname; // 현재경로
+
+        $.getScript(prefix + page + suffix)
+            .done(function (data){
+                console.log(data); // success
+            })
+            .fail(function() {
+                alert("js를 찾을 수 없습니다.");
+            });
+    });
+</script>
+<body>
+    <header th:replace="fragments/header :: Header"></header>
+    <main id="container">
+
+    </main>
+    <footer th:replace="fragments/footer :: Footer"></footer>
+    <div id="commonLayer"></div>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      th:fragment="Header">
+<div class="logo">
+    <a href="/" th:href="@{/}">My Website</a>
+</div>
+<nav>
+    <ul>
+        <li><a href="/" th:href="@{/}">Home</a></li>
+        <li><a href="/about" th:href="@{/about}">About</a></li>
+        <li><a href="/contact" th:href="@{/contact}">Contact</a></li>
+    </ul>
+</nav>
+</html>
