@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/contentLayout}"
+      layout:fragment="Content">
+<head>
+    <meta charset="UTF-8">
+    <title>Dash Board</title>
+</head>
+<body>
+    <div class="container-fluid dashboard">
+        <div class="row">
+            <!-- Calendar -->
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Calendar</h4>
+                    </div>
+                    <div class="card-body calendar-container">
+                        <div id="calendar"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- To-Do List -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>To-Do List</h4>
+                    </div>
+                    <div class="card-body todo-container">
+                        <ul id="todo-list" class="list-unstyled">
+                            <li class="todo-item">Design new dashboard layout</li>
+                            <li class="todo-item">Fix user authentication issue</li>
+                            <li class="todo-item">Add responsive design to all pages</li>
+                        </ul>
+                        <div class="todo-add">
+                            <input type="text" id="new-todo" class="form-control" placeholder="Add new task">
+                            <button id="add-todo" class="btn btn-primary mt-2">Add Task</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize FullCalendar
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            height: 'auto',
+            events: [
+                { title: 'Project Meeting', start: '2024-09-30' },
+                { title: 'Code Review', start: '2024-10-01' },
+                { title: 'Release Launch', start: '2024-10-05' }
+            ]
+        });
+        calendar.render();
+
+        // Initialize Sortable for To-Do List
+        var todoList = document.getElementById('todo-list');
+        new Sortable(todoList, {
+            animation: 150,
+            ghostClass: 'blue-background-class'
+        });
+
+        // Add new task to To-Do List
+        document.getElementById('add-todo').addEventListener('click', function() {
+            var newTodo = document.getElementById('new-todo').value;
+            if (newTodo.trim() !== '') {
+                var newTodoItem = document.createElement('li');
+                newTodoItem.className = 'todo-item';
+                newTodoItem.textContent = newTodo;
+                todoList.appendChild(newTodoItem);
+                document.getElementById('new-todo').value = ''; // Clear input field
+            }
+        });
+    });
+</script>
+</html>

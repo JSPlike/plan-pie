@@ -1,9 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">>
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head th:replace="fragments/config :: Config"></head>
 <script>
     $(function() {
         let prefix = '/assets/js';
@@ -21,10 +19,12 @@
 </script>
 <body>
     <header th:replace="fragments/header :: Header"></header>
-    <main id="container">
-
+    <main id="container" class="container">
+        <th:block layout:fragment="Content"></th:block>
     </main>
+
+
     <footer th:replace="fragments/footer :: Footer"></footer>
-    <div id="commonLayer"></div>
+    <div id="commonLayer" th:include="fragments/layer"></div>
 </body>
 </html>

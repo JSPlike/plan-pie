@@ -2,14 +2,20 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       th:fragment="Header">
-<div class="logo">
-    <a href="/" th:href="@{/}">My Website</a>
-</div>
-<nav>
-    <ul>
-        <li><a href="/" th:href="@{/}">Home</a></li>
-        <li><a href="/about" th:href="@{/about}">About</a></li>
-        <li><a href="/contact" th:href="@{/contact}">Contact</a></li>
-    </ul>
+<nav class="navbar">
+    <div class="container">
+        <div class="navbar-brand-container">
+            <a href="/" th:href="@{/}">
+                <img th:src="@{/images/plan-pie-logo.png}" alt="Logo" style="height: 40px;">
+            </a>
+            <a class="navbar-brand" href="/">Plan Pie</a>
+        </div>
+        <ul class="navbar-menu">
+            <li><a href="/" th:href="@{/}">Home</a></li>
+            <li><a href="/about" th:href="@{/about}">About</a></li>
+            <li><a href="/contact" th:href="@{/contact}">Contact</a></li>
+            <li><a href="/login" class="login-btn">Login</a></li>
+        </ul>
+    </div>
 </nav>
 </html>
