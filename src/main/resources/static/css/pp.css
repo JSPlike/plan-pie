@@ -1,7 +1,7 @@
 /* Header Styles */
 .navbar {
     background-color: #333;
-    padding: 10px 0;
+    padding: 8px 0;
     color: #fff;
 }
 
@@ -55,7 +55,7 @@
 
 /* Footer Styles */
 .footer {
-    position: fixed;
+    position: relative;
     left: 0;
     bottom: 0;
     width: 100%;
@@ -68,7 +68,7 @@
 .footer-content {
     background-color: #222;
     color: #ddd;
-    padding: 40px 0;
+    padding: 20px 0;
 }
 
 .footer-columns {
@@ -123,7 +123,11 @@
 
 /*************** dashboard ***************/
 body {
-    background-color: #f4f6f9;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh; /* 페이지가 꽉 차도록 설정 */
+    display: flex;
+    flex-direction: column;
 }
 
 .dashboard {
