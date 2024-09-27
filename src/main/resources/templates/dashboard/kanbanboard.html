@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/contentLayout}"
+      layout:fragment="Content">
+<head>
+    <meta charset="UTF-8">
+    <script src="/biz/dashboard/kanbanboard.js" defer></script>
+</head>
+<body>
+    <div id="kanban-board" class="kanban-board light">
+        <div class="kanban-wrap">
+            <h3>To Do</h3>
+            <div class="kanban-column todo" id="todo" ondragover="allowDrop(event)" ondrop="drop(event)">
+                <div class="kanban-task" draggable="true" ondragstart="drag(event)" id="task1">Task 1</div>
+                <div class="kanban-task" draggable="true" ondragstart="drag(event)" id="task2">Task 2</div>
+            </div>
+        </div>
+        <div class="kanban-wrap">
+            <h3>Doing</h3>
+            <div class="kanban-column doing" id="doing" ondragover="allowDrop(event)" ondrop="drop(event)">
+            </div>
+        </div>
+        <div class="kanban-wrap">
+            <h3>Done</h3>
+            <div class="kanban-column done" id="done" ondragover="allowDrop(event)" ondrop="drop(event)">
+            </div>
+        </div>
+    </div>
+</body>
+</html>

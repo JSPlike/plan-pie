@@ -12,12 +12,22 @@
         </div>
         <ul id="navbar-menu" class="navbar-menu light">
             <li><a href="/" th:href="@{/}">Home</a></li>
-            <li><a href="/about" th:href="@{/about}">About</a></li>
-            <li><a href="/contact" th:href="@{/contact}">Contact</a></li>
+            <li>
+                <form id="dashForm" th:action="@{/movePage}" method="get">
+                    <input type="hidden" name="page" value="dashboard/dashboard">
+                    <a href="#" onclick="document.getElementById('dashForm').submit(); return false;">DashBoard</a>
+                </form>
+            </li>
+            <li>
+                <form id="kanbanForm" th:action="@{/movePage}" method="get">
+                    <input type="hidden" name="page" value="dashboard/kanbanboard">
+                    <a href="#" onclick="document.getElementById('kanbanForm').submit(); return false;">KanbanBoard</a>
+                </form>
+            </li>
             <li>
                 <label class="theme-toggle">
                     <input class="theme-checkbox" role="switch" type="checkbox" />
-                    <span>테마</span>
+                    <span id="theme-title">Light</span>
                 </label>
             </li>
             <li><a href="/login" class="login-btn">Login</a></li>

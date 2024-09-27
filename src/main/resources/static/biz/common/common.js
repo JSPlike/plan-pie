@@ -13,6 +13,8 @@ themeCheckbox.addEventListener('change', () => {
         $('#footer-content').removeClass('light').addClass('dark');
         $('#footer-columns').removeClass('light').addClass('dark');
         $('#footer-bottom').removeClass('light').addClass('dark');
+        $('#kanban-board').removeClass('light').addClass('dark');
+        $('#theme-title').text('Dark');
     } else {
         body.classList.remove('dark');
         body.classList.add('light');
@@ -23,5 +25,7 @@ themeCheckbox.addEventListener('change', () => {
         $('#footer-content').removeClass('dark').addClass('light');
         $('#footer-columns').removeClass('dark').addClass('light');
         $('#footer-bottom').removeClass('dark').addClass('light');
+        $('#kanban-board').removeClass('dark').addClass('light');
+        $('#theme-title').text('Light');
     }
 });

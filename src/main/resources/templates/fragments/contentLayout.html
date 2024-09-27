@@ -21,8 +21,8 @@
     <header th:replace="fragments/header :: Header"></header>
     <main id="container" class="content-container">
         <th:block layout:fragment="Content"></th:block>
-        <footer th:replace="fragments/footer :: Footer"></footer>
     </main>
+    <footer th:replace="fragments/footer :: Footer"></footer>
 
     <div id="commonLayer" th:include="fragments/layer"></div>
 </body>
