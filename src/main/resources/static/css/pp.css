@@ -1,8 +1,65 @@
+body.light {
+    background-color: white;
+    color: black;
+}
+body.dark {
+    background-color: #333;
+    color: white;
+}
+nav.light {
+    background-color: #f8f9fa; /* 밝은 배경 */
+    color: black; /* 글자색 검정 */
+}
+nav.dark {
+    background-color: #444; /* 어두운 배경 */
+    color: white; /* 글자색 흰색 */
+}
+.navbar .navbar-brand.light {
+    color: black; /* 글자색 검정 */
+}
+.navbar .navbar-brand.dark {
+    color: #fff;
+}
+.navbar .navbar-menu.light a {
+    color: black; /* 글자색 검정 */
+}
+.navbar .navbar-menu.dark a {
+    color: #fff;
+}
+footer.light {
+    background-color: #f8f9fa; /* 밝은 배경 */
+    color: black; /* 글자색 검정 */
+}
+footer.dark {
+    background-color: #444; /* 어두운 배경 */
+    color: white; /* 글자색 흰색 */
+}
+.footer-content.light {
+    background-color: #f8f9fa; /* 밝은 배경 */
+    color: black; /* 글자색 검정 */
+}
+.footer-content.dark {
+    background-color: #444; /* 어두운 배경 */
+    color: white; /* 글자색 흰색 */
+}
+.footer-columns.light .footer-column a, h4 {
+    color: black;
+}
+.footer-columns.dark .footer-column a, h4 {
+    color: #ddd;
+}
+.footer-bottom.light {
+    color: black; /* 글자색 검정 */
+}
+.footer-bottom.dark {
+    color: white; /* 글자색 흰색 */
+}
+
 /* Header Styles */
 .navbar {
-    background-color: #333;
-    padding: 8px 0;
     color: #fff;
+    display: flex; /* 플렉스 박스 설정 */
+    align-items: center; /* 수직 가운데 정렬 */
 }
 
 .navbar-brand-container {
@@ -15,7 +72,6 @@
     display: inline-flex; /* 인라인 플렉스 설정으로 정렬 */
     align-items: center; /* 수직 정렬 */
     font-size: 2.0em;
-    color: #fff;
 }
 
 .navbar .navbar-brand:hover {
@@ -27,15 +83,18 @@
     margin: 0;
     padding: 0;
     float: right;
+    display: flex;
+    align-items: center; /* 수직 가운데 정렬 */
 }
 
 .navbar .navbar-menu li {
-    display: inline;
+    /*display: inline;*/
+    display: inline-flex; /* 인라인 플렉스 설정 */
+    align-items: center; /* 수직 정렬 */
     margin: 0 15px;
 }
 
 .navbar .navbar-menu li a {
-    color: #fff;
     text-decoration: none;
 }
 
@@ -45,6 +104,7 @@
 
 .login-btn {
     background-color: #007bff;
+    color: white !important;
     padding: 5px 10px;
     border-radius: 5px;
 }
@@ -53,34 +113,91 @@
     background-color: #0056b3;
 }
 
+/* 테마 on off*/
+.theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.theme-checkbox {
+    appearance: none;
+    position: relative;
+    border: max(2px, 0.1em) solid gray;
+    border-radius: 1.25em;
+    width: 2.25em;
+    height: 1.25em;
+}
+
+.theme-checkbox::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
+    transform: scale(0.8);
+    background-color: gray;
+    transition: left 250ms linear;
+}
+
+.theme-checkbox:checked {
+    background-color: tomato;
+    border-color: tomato;
+}
+
+.theme-checkbox:checked::before {
+    background-color: white;
+    left: 1em;
+}
+
+.theme-checkbox:disabled {
+    border-color: lightgray;
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.theme-checkbox:disabled:before {
+    background-color: lightgray;
+}
+
+.theme-checkbox:disabled + span {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.theme-checkbox:focus-visible {
+    outline-offset: max(2px, 0.1em);
+    outline: max(2px, 0.1em) solid tomato;
+}
+
+.theme-checkbox:enabled:hover {
+    box-shadow: 0 0 0 max(4px, 0.2em) lightgray;
+}
+
 /* Footer Styles */
 .footer {
     position: relative;
     left: 0;
     bottom: 0;
     width: 100%;
-    background-color: #333;
-    color: white;
     text-align: center;
     padding: 10px 0;
 }
 
 .footer-content {
-    background-color: #222;
-    color: #ddd;
-    padding: 20px 0;
+    padding: 10px 0;
 }
 
 .footer-columns {
     display: flex;
-    justify-content: space-between;
-    padding-bottom: 20px;
+    justify-content: center;
+    padding-bottom: 10px;
 }
-
-.footer-column h4 {
-    font-size: 1.2em;
-    margin-bottom: 15px;
-    color: #fff;
+.footer-column {
+    display: flex; /* Flexbox 사용 */
+    justify-content: center; /* 수평 가운데 정렬 */
 }
 
 .footer-column ul {
@@ -94,7 +211,6 @@
 }
 
 .footer-column ul li a {
-    color: #ddd;
     text-decoration: none;
 }
 
@@ -113,7 +229,7 @@
     border-top: 1px solid #444;
 }
 
-.footer-bottom p {
+.footer-bottom span {
     margin: 0;
     font-size: 0.9em;
 }
@@ -132,6 +248,14 @@ body {
 
 .dashboard {
     padding: 20px;
+}
+
+.fc-col-header-cell-cushion {
+    color: #444; /* 요일 색상 */
+}
+
+.fc-daygrid-day-number {
+    color: #444; /* 숫자 색상 */
 }
 
 .card {

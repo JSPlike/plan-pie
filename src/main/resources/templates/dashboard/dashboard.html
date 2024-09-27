@@ -5,7 +5,7 @@
       layout:fragment="Content">
 <head>
     <meta charset="UTF-8">
-    <title>Dash Board</title>
+    <script src="/biz/dashboard/dashboard.js" defer></script>
 </head>
 <body>
     <div class="container-fluid dashboard">
@@ -13,9 +13,9 @@
             <!-- Calendar -->
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">
+                    <!--<div class="card-header">
                         <h4>Calendar</h4>
-                    </div>
+                    </div>-->
                     <div class="card-body calendar-container">
                         <div id="calendar"></div>
                     </div>
@@ -44,40 +44,4 @@
         </div>
     </div>
 </body>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Initialize FullCalendar
-        var calendarEl = document.getElementById('calendar');
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth',
-            height: 'auto',
-            events: [
-                { title: 'Project Meeting', start: '2024-09-30' },
-                { title: 'Code Review', start: '2024-10-01' },
-                { title: 'Release Launch', start: '2024-10-05' }
-            ]
-        });
-        calendar.render();
-
-        // Initialize Sortable for To-Do List
-        var todoList = document.getElementById('todo-list');
-        new Sortable(todoList, {
-            animation: 150,
-            ghostClass: 'blue-background-class'
-        });
-
-        // Add new task to To-Do List
-        document.getElementById('add-todo').addEventListener('click', function() {
-            var newTodo = document.getElementById('new-todo').value;
-            if (newTodo.trim() !== '') {
-                var newTodoItem = document.createElement('li');
-                newTodoItem.className = 'todo-item';
-                newTodoItem.textContent = newTodo;
-                todoList.appendChild(newTodoItem);
-                document.getElementById('new-todo').value = ''; // Clear input field
-            }
-        });
-    });
-</script>
 </html>

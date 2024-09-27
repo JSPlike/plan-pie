@@ -2,18 +2,24 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       th:fragment="Header">
-<nav class="navbar">
+<nav id="navbar" class="navbar light">
     <div class="container">
         <div class="navbar-brand-container">
             <a href="/" th:href="@{/}">
                 <img th:src="@{/images/plan-pie-logo.png}" alt="Logo" style="height: 40px;">
             </a>
-            <a class="navbar-brand" href="/">Plan Pie</a>
+            <a id="navbar-brand" class="navbar-brand light" href="/">Plan Pie</a>
         </div>
-        <ul class="navbar-menu">
+        <ul id="navbar-menu" class="navbar-menu light">
             <li><a href="/" th:href="@{/}">Home</a></li>
             <li><a href="/about" th:href="@{/about}">About</a></li>
             <li><a href="/contact" th:href="@{/contact}">Contact</a></li>
+            <li>
+                <label class="theme-toggle">
+                    <input class="theme-checkbox" role="switch" type="checkbox" />
+                    <span>테마</span>
+                </label>
+            </li>
             <li><a href="/login" class="login-btn">Login</a></li>
         </ul>
     </div>
