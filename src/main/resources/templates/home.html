@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/contentLayout}"
+      layout:fragment="Content">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-    <form th:action="@{/movePage}" method="get">
-        <input type="hidden" id="path" name="page" value="dashboard/dashboard">
-        <button type="submit">대쉬보드로 이동</button>
-    </form>
+    <section>
+
+    </section>
 </body>
 </html>

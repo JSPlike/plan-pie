@@ -73,6 +73,7 @@ footer.dark {
     display: flex; /* 플렉스 박스 설정 */
     align-items: center; /* 수직 가운데 정렬 */
     z-index: 1000; /* 다른 요소들 위에 위치 */
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1); /* 아래쪽 그림자 추가 */
 }
 
 .navbar-brand-container {
@@ -362,6 +363,7 @@ body {
 
 .kanban-task {
     background: #fff;
+    color: #444 !important;
     border: 1px solid #ccc;
     border-radius: 4px;
     margin: 5px 0;

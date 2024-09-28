@@ -8,13 +8,17 @@
         let suffix = '.js';
         let params = new URLSearchParams(window.location.search);
         let page = params.get('page');
-        $.getScript(prefix + page + suffix)
-            .done(function (data){
-                console.log(page + " js build completed"); // success
-            })
-            .fail(function() {
-                alert("js를 찾을 수 없습니다.");
-            });
+        console.log('========================');
+        console.log(page);
+        if(page !== null && page !== '/') {
+            $.getScript(prefix + page + suffix)
+                .done(function (data){
+                    console.log(page + " js build completed"); // success
+                })
+                .fail(function() {
+                    alert("js를 찾을 수 없습니다.");
+                });
+        }
     });
 </script>
 <body>
