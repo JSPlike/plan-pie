@@ -1,31 +1,45 @@
 const themeCheckbox = document.querySelector('.theme-checkbox');
 const body = document.body;
+const elementsToToggle = [
+    '#navbar', '#navbar-brand', '#navbar-menu', '#home-container1', '#footer', '#footer-content',
+    '#footer-columns', '#footer-bottom', '#kanban-board'
+];
+
+// 테마를 적용하는 함수
+function applyTheme(theme) {
+    const removeClass = theme === 'dark' ? 'light' : 'dark';
+    const addClass = theme;
+
+    body.classList.remove(removeClass);
+    body.classList.add(addClass);
+
+    elementsToToggle.forEach(selector => {
+        const element = document.querySelector(selector);
+        if (element) {
+            element.classList.remove(removeClass);
+            element.classList.add(addClass);
+        }
+    });
+
+    // 테마 제목 변경
+    document.querySelector('#theme-title').textContent = theme === 'dark' ? 'Dark' : 'Light';
+    // LocalStorage에 테마 저장
+    localStorage.setItem('theme', theme);
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    const currentTheme = localStorage.getItem('theme');
+
+    // 저장된 테마가 있으면 적용
+    if (currentTheme) {
+        applyTheme(currentTheme);
+        themeCheckbox.checked = currentTheme === 'dark';
+    }
+});
 
 // 체크박스 상태에 따라 테마 변경
 themeCheckbox.addEventListener('change', () => {
-    if (themeCheckbox.checked) {
-        body.classList.remove('light');
-        body.classList.add('dark');
-        $('#navbar').removeClass('light').addClass('dark');
-        $('#navbar-brand').removeClass('light').addClass('dark');
-        $('#navbar-menu').removeClass('light').addClass('dark');
-        $('#footer').removeClass('light').addClass('dark');
-        $('#footer-content').removeClass('light').addClass('dark');
-        $('#footer-columns').removeClass('light').addClass('dark');
-        $('#footer-bottom').removeClass('light').addClass('dark');
-        $('#kanban-board').removeClass('light').addClass('dark');
-        $('#theme-title').text('Dark');
-    } else {
-        body.classList.remove('dark');
-        body.classList.add('light');
-        $('#navbar').removeClass('dark').addClass('light');
-        $('#navbar-brand').removeClass('dark').addClass('light');
-        $('#navbar-menu').removeClass('dark').addClass('light');
-        $('#footer').removeClass('dark').addClass('light');
-        $('#footer-content').removeClass('dark').addClass('light');
-        $('#footer-columns').removeClass('dark').addClass('light');
-        $('#footer-bottom').removeClass('dark').addClass('light');
-        $('#kanban-board').removeClass('dark').addClass('light');
-        $('#theme-title').text('Light');
-    }
+    const newTheme = themeCheckbox.checked ? 'dark' : 'light';
+    applyTheme(newTheme);
 });
+

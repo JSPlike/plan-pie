@@ -26,6 +26,14 @@ nav.dark {
 .navbar .navbar-menu.dark a {
     color: #fff;
 }
+#home-container1.light {
+    background-color: #f8f9fa; /* 밝은 배경 */
+    color: black; /* 글자색 검정 */
+}
+#home-container1.dark {
+    background-color: #444; /* 어두운 배경 */
+    color: white; /* 글자색 흰색 */
+}
 footer.light {
     background-color: #f8f9fa; /* 밝은 배경 */
     color: black; /* 글자색 검정 */
@@ -193,7 +201,7 @@ footer.dark {
 main {
     flex: 1; /* 남은 공간을 채우도록 설정 */
     padding-top: 74px; /* 헤더 높이만큼 패딩 */
-    padding-bottom: 129px;
+    padding-bottom: 39px;
 }
 /* Footer Styles */
 .footer {
