@@ -30,7 +30,12 @@
                     <span id="theme-title">Light</span>
                 </label>
             </li>
-            <li><a href="/login" class="login-btn">Login</a></li>
+            <li th:if="${#authentication != null and #authentication.principal != null}">
+                <a href="javascript:void(0);" onclick="toggleProfile(event)">Profile</a>
+            </li>
+            <li th:if="${#authentication == null or #authentication.principal == null}">
+                <a th:href="@{/user/login}" class="login-btn">Login</a>
+            </li>
         </ul>
     </div>
 </nav>

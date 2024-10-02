@@ -28,13 +28,19 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.session:spring-session-core'
+
+	// security
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 
 	// thymeleaf
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect' // Thymeleaf Layout Dialect 추가
 
-	compileOnly 'org.projectlombok:lombok'
+	// swagger
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+
 	implementation 'org.springframework.boot:spring-boot-devtools'
+
+	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

@@ -198,6 +198,18 @@ footer.dark {
     box-shadow: 0 0 0 max(4px, 0.2em) lightgray;
 }
 
+/* user profile */
+.profile-card {
+    display: none; /* 기본적으로 숨김 */
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-top: 5px; /* 약간의 마진 */
+    background-color: #f9f9f9;
+    width: 300px;
+    position: absolute; /* 위치를 절대값으로 설정 */
+    z-index: 1000; /* 카드가 다른 요소 위에 나타나도록 */
+}
+
 main {
     flex: 1; /* 남은 공간을 채우도록 설정 */
     padding-top: 74px; /* 헤더 높이만큼 패딩 */
@@ -387,4 +399,16 @@ body {
 
 .kanban-column:hover {
     background: #d0d0d0; /* 마우스 오버 시 열 배경색 변경 */
+}
+
+/* 버튼 링크시 */
+.link-style {
+    cursor: pointer; /* 마우스 포인터 변경 */
+    color: black; /* 링크 색상 */
+    text-decoration: none; /* 밑줄 추가 */
+}
+
+/* Hover 효과 */
+.link-style:hover {
+    color: #964b00; /* Hover 시 색상 변경 */
 }

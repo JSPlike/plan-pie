@@ -5,24 +5,26 @@
 <head th:replace="fragments/config" :: Config></head>
 <script>
     $(function() {
-        let prefix = '/assets/js';
+        let prefix = '/biz/';
         let suffix = '.js';
-        let page = location.pathname; // 현재경로
+        let params = new URLSearchParams(window.location.search);
+        let page = params.get('page');
 
-        if(page === '' || page === '/') {
-            page = '/user/login';
+        console.log('========================');
+        console.log(page);
+        if(page !== null && page !== '/') {
+            $.getScript(prefix + page + suffix)
+                .done(function (data){
+                    console.log(page + " js build completed"); // success
+                })
+                .fail(function() {
+                    alert("js를 찾을 수 없습니다.");
+                });
         }
-
-        $.getScript(prefix + page + suffix)
-            .done(function (data){
-                console.log(data); // success
-            })
-            .fail(function() {
-                alert("js를 찾을 수 없습니다.");
-            });
     });
 </script>
 <body>
     <th:block layout:fragment="Content"></th:block>
+    <div id="commonLayer" th:include="fragments/layer"></div>
 </body>
 </html>

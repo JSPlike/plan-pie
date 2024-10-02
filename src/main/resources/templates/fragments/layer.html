@@ -1,9 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-</head>
-<body>
-
-</body>
-</html>
+<div id="profileCard" class="profile-card" style="display:none; z-index: 999">
+    <h2>Profile</h2>
+    <p th:if="${#authentication != null}">
+        Username: <span th:text="${#authentication.principal.username}"></span>
+    </p>
+    <p th:if="${#authentication == null}">
+        Username: <span>None</span>
+    </p>
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">Logout</button>
+    </form>
+    <button onclick="document.getElementById('profileCard').style.display='none';">Close</button>
+</div>

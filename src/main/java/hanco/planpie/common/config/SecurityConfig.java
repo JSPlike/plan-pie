@@ -1,21 +1,51 @@
 package hanco.planpie.common.config;
 
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.CorsConfigurer;
+import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+@Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(authorize -> authorize
-                .requestMatchers(new AntPathRequestMatcher("/api/**")).hasRole("ADMIN")
-                .requestMatchers(new AntPathRequestMatcher("/user/**")).hasAnyRole("USER", "ADMIN")
-                .requestMatchers(new AntPathRequestMatcher("/**")).permitAll()
-                .anyRequest().authenticated());
+
+        http
+            .csrf(csrf -> csrf.disable())
+            .cors(cors -> cors.disable())
+
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/user/**")).permitAll()
+                .requestMatchers("/dashboard/**").authenticated()
+                .anyRequest().permitAll()
+            )
+            .formLogin(login -> login
+                .loginPage("/user/login")
+                .defaultSuccessUrl("/", true)
+                .loginProcessingUrl("/user/login")
+                .failureUrl("/user/login?error=true")
+                .permitAll()
+            )
+            .logout((logoutConfig) ->
+                    logoutConfig.logoutSuccessUrl("/")
+            )
+        ;
         return http.build();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

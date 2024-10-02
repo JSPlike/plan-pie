@@ -43,3 +43,13 @@ themeCheckbox.addEventListener('change', () => {
     applyTheme(newTheme);
 });
 
+function toggleProfile(event) {
+    const card = document.getElementById('profileCard');
+    card.style.display = card.style.display === 'none' ? 'block' : 'none'; // 카드 보이기/숨기기
+
+    // 클릭한 요소의 위치 계산
+    const rect = event.target.getBoundingClientRect();
+    card.style.left = `${rect.left}px`; // 클릭한 위치의 x좌표
+    card.style.top = `${rect.bottom}px`; // 클릭한 위치의 y좌표 (아래쪽)
+}
+
