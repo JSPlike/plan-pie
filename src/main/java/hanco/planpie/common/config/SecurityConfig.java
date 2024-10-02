@@ -11,11 +11,11 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(auth -> auth
-                .requestMatchers(new AntPathRequestMatcher("/api/swagger-ui/*")).permitAll()
-                .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
-                .anyRequest().permitAll());
-
+        http.authorizeHttpRequests(authorize -> authorize
+                .requestMatchers(new AntPathRequestMatcher("/api/**")).hasRole("ADMIN")
+                .requestMatchers(new AntPathRequestMatcher("/user/**")).hasAnyRole("USER", "ADMIN")
+                .requestMatchers(new AntPathRequestMatcher("/**")).permitAll()
+                .anyRequest().authenticated());
         return http.build();
     }
 }
