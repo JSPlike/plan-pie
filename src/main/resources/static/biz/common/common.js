@@ -39,8 +39,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // 체크박스 상태에 따라 테마 변경
 themeCheckbox.addEventListener('change', () => {
-    const newTheme = themeCheckbox.checked ? 'dark' : 'light';
-    applyTheme(newTheme);
+    if(themeCheckbox) {
+        const newTheme = themeCheckbox.checked ? 'dark' : 'light';
+        if(newTheme) applyTheme(newTheme);
+    }
+
 });
 
 function toggleProfile(event) {

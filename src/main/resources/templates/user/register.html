@@ -10,20 +10,16 @@
 <body>
 <section class="vh-100" style="background-color: #D2B48C;">
     <div class="container h-100">
-        <div class="row">
-            <div class="col-lg-10 col-xl-5 mx-auto">
-                <div class="card flex-row my-5 border-0 shadow rounded-3 overflow-hidden">
-                    <div class="card-img-left d-none d-md-flex">
-                        <!-- Background image for card set in CSS! -->
-                    </div>
-                    <div class="card-body p-4 p-sm-5">
-                        <form>
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col col-xl-5 mx-auto">
+                <div class="card" style="border-radius: 1rem;">
+                    <div class="card-body p-4 p-lg-5 text-black">
+                        <form th:action="@{/api/register}" method="post">
                             <div class="d-flex align-items-center mb-3 pb-1">
                                 <i class="fa-solid fa-earth-asia fa-2x me-3" style="color: #ff6219;"></i>
                                 <span id="login-title" class="h1 fw-bold mb-0 link-style">PLAN PIE</span>
                             </div>
                             <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">SignUp your account</h5>
-
 
                             <div class="form-floating mb-3">
                                 <input type="text" class="form-control" id="floatingInputUsername" placeholder="myusername" required autofocus>
@@ -51,7 +47,7 @@
                                 <button class="btn btn-lg btn-primary btn-login fw-bold text-uppercase" type="submit">Register</button>
                             </div>
 
-                            <a class="d-block text-center mt-2 small mb-5 pb-lg-2" th:href="@{/user/login}">Have an account? Sign In</a>
+                            <a class="d-block text-center mt-2 small mb-3 pb-lg-2" th:href="@{/user/login}">Have an account? Sign In</a>
 
                             <hr class="my-4">
 
