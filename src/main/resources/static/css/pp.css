@@ -412,3 +412,14 @@ body {
 .link-style:hover {
     color: #964b00; /* Hover 시 색상 변경 */
 }
+
+/* register */
+.btn-google {
+  color: white !important;
+  background-color: #ea4335;
+}
+
+.btn-facebook {
+  color: white !important;
+  background-color: #3b5998;
+}

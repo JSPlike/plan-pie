@@ -30,6 +30,11 @@ public class PageController {
         return "user/login";  // 로그인 페이지 템플릿
     }
 
+    @GetMapping("/user/register")
+    public String register() {
+        return "user/register";  // 로그인 페이지 템플릿
+    }
+
     @GetMapping("/dashboard/dashboard")
     public String dashboard() {
         return "dashboard/dashboard";  // 로그인 페이지 템플릿
