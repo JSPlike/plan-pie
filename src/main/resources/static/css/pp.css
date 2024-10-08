@@ -414,12 +414,62 @@ body {
 }
 
 /* register */
+
+form {
+    font-family: "Jua", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
 .btn-google {
   color: white !important;
   background-color: #ea4335;
 }
 
+.btn-google:hover {
+    color: white !important;
+    background-color: #ea8335;
+}
+
 .btn-facebook {
   color: white !important;
   background-color: #3b5998;
+}
+
+.form-floating .form-control {
+    border-radius: 8px; /* 모서리 둥글게 */
+    border: 2px solid #ced4da; /* 기본 테두리 */
+    box-shadow: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-floating .form-control:focus {
+    border-color: #007bff; /* 포커스 시 테두리 색상 */
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.25); /* 그림자 효과 */
+    outline: none;
+}
+
+.form-floating label {
+    position: absolute;
+    color: #6c757d;
+    pointer-events: none;
+    transition: all 0.2s ease;
+}
+
+/* 인풋 필드에 오류 발생 시 */
+.form-floating .form-control.is-invalid {
+    border-color: #dc3545;
+}
+
+.form-floating .form-control.is-invalid + label {
+    color: #dc3545;
+}
+
+/* 인풋 필드가 성공 상태일 때 */
+.form-floating .form-control.is-valid {
+    border-color: #28a745;
+}
+
+.form-floating .form-control.is-valid + label {
+    color: #28a745;
 }

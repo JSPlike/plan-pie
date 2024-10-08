@@ -21,10 +21,13 @@ public class SecurityConfig {
             .cors(cors -> cors.disable())
 
             .authorizeHttpRequests(auth -> auth
+                .requestMatchers(new AntPathRequestMatcher("/biz/**")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/css/**")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/js/**")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/images/**")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/user/**")).permitAll()
-                .requestMatchers("/dashboard/**").authenticated()
-                .anyRequest().permitAll()
+                .anyRequest().authenticated()
             )
             .formLogin(login -> login
                 .loginPage("/user/login")

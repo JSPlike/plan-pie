@@ -24,7 +24,7 @@ public class UserService {
     }
 
     public void createDefaultUser() {
-        if (userRepository.findByEmail("admin").isEmpty()) {
+        if (userRepository.findByEmail("admin@email.com").isEmpty()) {
             User user = new User("admin@email.com", passwordEncoder.encode("password"), true, UUID.randomUUID().toString(), "ADMIN");
             userRepository.save(user);
             System.out.println("기본 사용자(admin) 생성됨");
