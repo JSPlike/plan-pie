@@ -1,31 +1,47 @@
 package hanco.planpie.user.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
+@NoArgsConstructor
+@Getter
+@Builder
+@AllArgsConstructor
 @Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // 기본키
 
-    private String username;
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false)
+    private boolean isEnabled;  // 계정 활성화 여부
+
+    @Column(unique = true)
+    private String emailVerificationToken;
+
     private String role;
 
-    // 기본 생성자
-    public User() {}
-
     // 매개변수가 있는 생성자
-    public User(String username, String password, String role) {
-        this.username = username;
+    public User(String username, String password, boolean isEnabled, String emailVerificationToken, String role) {
+        this.email = username;
         this.password = password;
+        this.isEnabled = isEnabled;
+        this.emailVerificationToken = emailVerificationToken;
         this.role = role;
     }
 
-    // ID getter
-    public Long getId() {
-        return id;
+    public String getUsername() {
+        return this.email;
     }
 
     // ID setter
@@ -33,19 +49,9 @@ public class User {
         this.id = id;
     }
 
-    // Username getter
-    public String getUsername() {
-        return username;
-    }
-
     // Username setter
     public void setUsername(String username) {
-        this.username = username;
-    }
-
-    // Password getter
-    public String getPassword() {
-        return password;
+        this.email = username;
     }
 
     // Password setter
@@ -53,9 +59,12 @@ public class User {
         this.password = password;
     }
 
-    // Role getter
-    public String getRole() {
-        return role;
+    public void setEnabled(boolean isEnabled) {
+        this.isEnabled = isEnabled;
+    }
+
+    public void setEmailVerificationToken(String emailVerificationToken) {
+        this.emailVerificationToken = emailVerificationToken;
     }
 
     // Role setter

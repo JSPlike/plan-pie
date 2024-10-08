@@ -35,6 +35,9 @@ dependencies {
 	// thymeleaf
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect' // Thymeleaf Layout Dialect 추가
 
+	// email verification
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
 	// swagger
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
 
