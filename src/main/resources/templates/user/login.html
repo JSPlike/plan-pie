@@ -7,7 +7,25 @@
     <title>Login</title>
     <script src="/biz/user/login.js" defer></script>
 </head>
-<body>
+<body class="noto-font">
+<nav id="navbar" class="navbar" style="background-color: #D2B48C; box-shadow: none;">
+    <div class="container">
+        <div class="navbar-brand-container">
+            <a href="/" th:href="@{/}">
+                <img th:src="@{/images/plan-pie-logo.png}" alt="Logo" style="height: 40px;">
+            </a>
+            <a id="navbar-brand" class="navbar-brand" href="/" style="color: #eee;">Plan Pie</a>
+        </div>
+        <ul id="navbar-menu" class="navbar-menu2">
+            <li th:if="${#authentication != null and #authentication.principal != null}">
+                <a href="javascript:void(0);" onclick="toggleProfile(event)">Profile</a>
+            </li>
+            <li th:if="${#authentication == null or #authentication.principal == null}">
+                <a th:href="@{/user/register}" class="login-btn2">Sign up FREE</a>
+            </li>
+        </ul>
+    </div>
+</nav>
 <section class="vh-100" style="background-color: #D2B48C;">
     <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
@@ -15,11 +33,10 @@
                 <div class="card" style="border-radius: 1rem;">
                     <div class="card-body p-4 p-lg-5 text-black">
                         <form th:action="@{/api/login}" method="post">
-                            <div class="d-flex align-items-center mb-3 pb-1">
-                                <i class="fa-solid fa-earth-asia fa-2x me-3" style="color: #ff6219;"></i>
-                                <span id="login-title" class="h1 fw-bold mb-0 link-style">PLAN PIE</span>
+                            <div style="text-align: center;">
+                                <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">로그인</h5>
                             </div>
-                            <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">로그인</h5>
+
 
                             <div class="form-floating mb-3">
                                 <input type="email" class="form-control" id="floatingInputEmail" name="email" placeholder="이메일 주소">
@@ -31,12 +48,16 @@
                                 <label for="floatingPassword">비밀번호</label>
                             </div>
 
-                            <div class="pt-1 mb-4">
-                                <button data-mdb-button-init data-mdb-ripple-init class="btn btn-dark btn-lg btn-block" type="button">Login</button>
+                            <div class="d-grid mb-2">
+                                <button id="btnLoginUser" class="btn btn-dark btn-lg login-btn2" type="button">로그인</button>
                             </div>
 
-                            <a class="small text-muted" href="#!">Forgot password?</a>
+                            <div class="mb-5 pb-lg-2" >
+
+                            </div>
+                            <!--<a class="small text-muted" href="#!">Forgot password?</a>
                             <p class="mb-5 pb-lg-2" style="color: #393f81;">Don't have an account? <a th:href="@{/user/register}" style="color: #393f81;">Register here</a></p>
+                            -->
                             <a href="#!" class="small text-muted">Terms of use.</a>
                             <a href="#!" class="small text-muted">Privacy policy</a>
                         </form>

@@ -2,6 +2,7 @@ package hanco.planpie.user.service;
 
 import hanco.planpie.common.service.EmailService;
 import hanco.planpie.user.domain.User;
+import hanco.planpie.user.dto.RegisterUserDto;
 import hanco.planpie.user.repository.UserRepository;
 import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
@@ -31,17 +32,21 @@ public class UserService {
         }
     }
     
-    public String createUser(User user) throws MessagingException {
-        if (user != null) {
-            user.setUsername(user.getUsername()); // email
-            user.setPassword(passwordEncoder.encode(user.getPassword())); // password
+    public String createUser(RegisterUserDto registerUserDto) throws MessagingException {
+        if (registerUserDto != null) {
+            if (!registerUserDto.getPassword().equals(registerUserDto.getConfirmPassword())) {
+                return "비밀번호가 일치하지 않습니다.";
+            }
+
+            User user = new User(); // 신규유저
+            user.setUsername(registerUserDto.getEmail());
+            user.setPassword(passwordEncoder.encode(registerUserDto.getPassword()));
             user.setEnabled(false); // 활성화여부
-            
+            user.setRole("USER"); // 일반 사용자
+
             // 이메일 인증토큰
             String verificationToken = UUID.randomUUID().toString();
             user.setEmailVerificationToken(verificationToken);
-            
-            user.setRole("USER");
             
             userRepository.save(user);
 
@@ -50,7 +55,8 @@ public class UserService {
             String emailBody = "<p>To complete your registration, please verify your email:</p>"
                     + "<a href='" + verificationLink + "'>Verify Email</a>";
 
-            emailService.sendEmail(user.getEmail(), "Complete Your Registration", emailBody);
+            // 해당이메일에 전송
+            emailService.sendEmail(registerUserDto.getEmail(), "Complete Your Registration", emailBody);
         }
 
         return "Please check your email to complete the registration.";

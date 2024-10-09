@@ -1,0 +1,31 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/pp_db
+    username: jay
+    password:
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update  # ??? ?? ?? ?? (create, update, validate, none)
+    show-sql: true      # SQL ?? ??
+    properties:
+      hibernate:
+        format_sql: true # SQL ??? ??
+  mail: # ????
+    host: smtp.gmail.com          # SMTP ?? ??
+    port: 587                        # SMTP ?? (????? 587 ?? 465)
+    username: happy@likelion.org # SMTP ??? ???
+    password: Kjoonyoung2588!@     # SMTP ??? ????
+    properties:
+      mail.smtp.auth: true            # SMTP ?? ??
+      mail.smtp.starttls.enable: true  # TLS ?? ?? ??
+      mail.smtp.starttls.required: true
+# ?? ?? ?? (?? ??)
+logging:
+  level:
+    org.hibernate.SQL: debug         # Hibernate SQL ?? ??
+    org.hibernate.type.descriptor.sql.BasicBinder: trace  # ?? ???? ??

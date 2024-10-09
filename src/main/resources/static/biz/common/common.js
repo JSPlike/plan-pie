@@ -22,7 +22,12 @@ function applyTheme(theme) {
     });
 
     // 테마 제목 변경
-    document.querySelector('#theme-title').textContent = theme === 'dark' ? 'Dark' : 'Light';
+    const themeTitleElement = document.querySelector('#theme-title');
+    if (themeTitleElement) {
+        themeTitleElement.textContent = theme === 'dark' ? 'Dark' : 'Light';
+    }
+
+    //document.querySelector('#theme-title').textContent = theme === 'dark' ? 'Dark' : 'Light';
     // LocalStorage에 테마 저장
     localStorage.setItem('theme', theme);
 }
@@ -33,18 +38,20 @@ document.addEventListener("DOMContentLoaded", function () {
     // 저장된 테마가 있으면 적용
     if (currentTheme) {
         applyTheme(currentTheme);
-        themeCheckbox.checked = currentTheme === 'dark';
+        if(themeCheckbox && themeCheckbox.checked) {
+            themeCheckbox.checked = currentTheme === 'dark';
+        }
     }
 });
 
-// 체크박스 상태에 따라 테마 변경
-themeCheckbox.addEventListener('change', () => {
-    if(themeCheckbox) {
-        const newTheme = themeCheckbox.checked ? 'dark' : 'light';
-        if(newTheme) applyTheme(newTheme);
-    }
-
-});
+if (themeCheckbox) { // null 체크
+    themeCheckbox.addEventListener('change', () => {
+        const newTheme = themeCheckbox.checked ? 'dark' : 'light'; // 체크된 상태에 따라 테마 설정
+        applyTheme(newTheme); // 테마 적용
+    });
+} else {
+    console.warn('Element #theme-checkbox not found.'); // 요소가 없을 경우 경고
+}
 
 function toggleProfile(event) {
     const card = document.getElementById('profileCard');

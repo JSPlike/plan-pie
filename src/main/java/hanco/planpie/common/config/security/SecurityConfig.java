@@ -2,6 +2,7 @@ package hanco.planpie.common.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,7 +16,6 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
         http
             .csrf(csrf -> csrf.disable())
             .cors(cors -> cors.disable())
@@ -27,6 +27,8 @@ public class SecurityConfig {
                 .requestMatchers(new AntPathRequestMatcher("/images/**")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/user/**")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/api/user/**")).permitAll()
+                .requestMatchers(HttpMethod.POST, "/register").permitAll() // POST 요청 허용
                 .anyRequest().authenticated()
             )
             .formLogin(login -> login
