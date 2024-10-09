@@ -514,6 +514,7 @@ body {
 }
 
 .form-floating label {
+    width:40%;
     position: absolute;
     color: #6c757d;
     pointer-events: none;

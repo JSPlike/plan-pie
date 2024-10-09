@@ -39,10 +39,20 @@
                                 <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">등록</h5>
                             </div>
 
-                            <div class="form-floating mb-3">
+                            <div class="form-floating mb-3" style="display: flex; align-items: center;">
                                 <input id="email" type="email" class="form-control" placeholder="이메일 주소">
+                                <button id="btnSendVerification" class="btn btn-outline-secondary" type="button" style="width: 200px; padding: 15px 10px 15px 10px; margin-left: 10px;">인증번호 전송</button>
                                 <label for="email">이메일 주소</label>
                             </div>
+                            <!-- 이메일 유효성 메시지 추가 -->
+                            <div id="emailValidationMessage" class="text-danger mb-3" style="display: none;"></div>
+
+                            <div class="form-floating mb-3" style="display: flex; align-items: center;">
+                                <input id="verificationCode" type="text" class="form-control" placeholder="인증번호 입력" maxlength="6">
+                                <button id="btnVerification" class="btn btn-outline-secondary" type="button" style="width: 70px; padding: 15px 15px 15px 15px; margin-left: 10px;">확인</button>
+                                <label for="verificationCode">인증번호 입력</label>
+                            </div>
+
 
                             <hr>
 
@@ -60,8 +70,6 @@
                                 <button id="btnRegUser" class="btn btn-dark btn-lg register-btn2" type="submit">등록</button>
                             </div>
 
-                            <!--<a class="d-block text-center mt-2 small mb-3 pb-lg-2" th:href="@{/user/login}">Have an account? Sign In</a>
--->
                             <hr class="my-4">
 
                             <div class="d-grid mb-2">
@@ -75,7 +83,6 @@
                                     <i class="fab fa-facebook-f me-2"></i> Sign up with Facebook
                                 </button>
                             </div>
-
                         </form>
                     </div>
                 </div>

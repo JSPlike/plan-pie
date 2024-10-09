@@ -16,14 +16,17 @@ spring:
       hibernate:
         format_sql: true # SQL ??? ??
   mail: # ????
-    host: smtp.gmail.com          # SMTP ?? ??
-    port: 587                        # SMTP ?? (????? 587 ?? 465)
-    username: happy@likelion.org # SMTP ??? ???
-    password: Kjoonyoung2588!@     # SMTP ??? ????
+    host: smtp.gmail.com              # SMTP ?? ??
+    port: 587                         # SMTP ?? (????? 587 ?? 465)
+    username: happy@likelion.org      # SMTP ??? ???
+    password: kjji ostv tkop jpgx     # SMTP ??? ????
     properties:
-      mail.smtp.auth: true            # SMTP ?? ??
-      mail.smtp.starttls.enable: true  # TLS ?? ?? ??
-      mail.smtp.starttls.required: true
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
 # ?? ?? ?? (?? ??)
 logging:
   level:
