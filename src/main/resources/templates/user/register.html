@@ -48,7 +48,7 @@
                             <div id="emailValidationMessage" class="text-danger mb-3" style="display: none;"></div>
 
                             <div class="form-floating mb-3" style="display: flex; align-items: center;">
-                                <input id="verificationCode" type="text" class="form-control" placeholder="인증번호 입력" maxlength="6">
+                                <input id="verificationCode" oninput="verifiedCodeInput(event)" type="text" class="form-control" placeholder="인증번호 입력" maxlength="6">
                                 <button id="btnVerification" class="btn btn-outline-secondary" type="button" style="width: 70px; padding: 15px 15px 15px 15px; margin-left: 10px;">확인</button>
                                 <label for="verificationCode">인증번호 입력</label>
                                 <p style="display: none;">인증되었습니다.</p>

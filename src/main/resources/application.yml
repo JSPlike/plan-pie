@@ -26,7 +26,12 @@ spring:
           auth: true
           starttls:
             enable: true
-
+  # Redis
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      duration: 600
 # ?? ?? ?? (?? ??)
 logging:
   level:
