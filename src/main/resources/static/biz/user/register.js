@@ -18,8 +18,6 @@ $('#btnVerification').click(function(){
     if(code != null ||case code.length < 6) {
 
     }
-
-
 });
 
 

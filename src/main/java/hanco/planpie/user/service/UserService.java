@@ -49,14 +49,6 @@ public class UserService {
             user.setEmailVerificationToken(verificationToken);
             
             userRepository.save(user);
-
-            // 이메일 인증 링크 전송
-            String verificationLink = "http://localhost:8080/api/auth/verify?token=" + verificationToken;
-            String emailBody = "<p>To complete your registration, please verify your email:</p>"
-                    + "<a href='" + verificationLink + "'>Verify Email</a>";
-
-            // 해당이메일에 전송
-            emailService.sendEmail(registerUserDto.getEmail(), "Complete Your Registration", emailBody);
         }
 
         return "Please check your email to complete the registration.";
