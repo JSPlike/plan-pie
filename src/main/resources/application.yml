@@ -4,22 +4,22 @@ server:
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/pp_db
-    username: jay
-    password:
+    username: postgres
+    password: admin
     driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
-      ddl-auto: update  # ??? ?? ?? ?? (create, update, validate, none)
-    show-sql: true      # SQL ?? ??
+      ddl-auto: update  # (create, update, validate, none)
+    show-sql: true      # SQL SHOW
     properties:
       hibernate:
-        format_sql: true # SQL ??? ??
-  mail: # ????
-    host: smtp.gmail.com              # SMTP ?? ??
-    port: 587                         # SMTP ?? (????? 587 ?? 465)
-    username: happy@likelion.org      # SMTP ??? ???
-    password: kjji ostv tkop jpgx     # SMTP ??? ????
+        format_sql: true # SQL
+  mail:
+    host: smtp.gmail.com              # SMTP HOST
+    port: 587                         # SMTP PORT (587 or 465)
+    username: happy@likelion.org
+    password: kjji ostv tkop jpgx
     properties:
       mail:
         smtp:
@@ -27,8 +27,8 @@ spring:
           starttls:
             enable: true
 
-# ?? ?? ?? (?? ??)
+# logging
 logging:
   level:
-    org.hibernate.SQL: debug         # Hibernate SQL ?? ??
-    org.hibernate.type.descriptor.sql.BasicBinder: trace  # ?? ???? ??
+    org.hibernate.SQL: debug         # Hibernate SQL
+    org.hibernate.type.descriptor.sql.BasicBinder: trace

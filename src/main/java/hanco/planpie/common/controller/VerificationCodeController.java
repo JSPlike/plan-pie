@@ -34,6 +34,8 @@ public class VerificationCodeController {
             return "email-verification-failure";  // 실패 페이지
         }
 
+
+        
         User user = optionalUser.get();
         user.setEnabled(true);  // 계정 활성화
         user.setEmailVerificationToken(null);  // 토큰 제거
