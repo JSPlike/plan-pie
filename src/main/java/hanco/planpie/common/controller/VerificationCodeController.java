@@ -1,47 +1,81 @@
 package hanco.planpie.common.controller;
 
+import hanco.planpie.common.service.EmailService;
+import hanco.planpie.dto.RequestEmailDto;
 import hanco.planpie.user.domain.User;
+import hanco.planpie.user.dto.RegisterUserDto;
 import hanco.planpie.user.repository.UserRepository;
+import jakarta.mail.MessagingException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
 @RequestMapping("/api/auth")
 public class VerificationCodeController {
     private final UserRepository userRepository;
+    private final EmailService emailService;
 
-    public VerificationCodeController(UserRepository userRepository) {
+    public VerificationCodeController(UserRepository userRepository, EmailService emailService) {
         this.userRepository = userRepository;
+        this.emailService = emailService;
     }
 
     /**
-     * 인증 메일을 보내 토큰을 확인하는 api
-     * @param token
-     * @param model
+     * 인증코드를 보낸다
+     * @param requestEmailDto
      * @return
      */
-    @GetMapping("/verify")
-    public String verifyEmail(@RequestParam String token, Model model) {
-        Optional<User> optionalUser = userRepository.findByEmailVerificationToken(token);
+    @PostMapping("/sendEmail")
+    public Map<String, Object> sendEmail(@RequestBody RequestEmailDto requestEmailDto) throws MessagingException {
+        Map<String, Object> retMap = new HashMap<>();
+
+        if(requestEmailDto != null){
+            Optional<User> optionalUser = userRepository.findByEmail(requestEmailDto.getEmail());
+
+            // Validation
+            if (!optionalUser.isEmpty()) { // 이메일 중복
+                retMap.put("succes", false);
+                retMap.put("msg", "이미 동일한 이메일이 있습니다.");
+                return retMap;
+            }
+
+            // sending email message
+            emailService.sendEmail(requestEmailDto.getEmail());
+            retMap.put("succes", true);
+            retMap.put("msg", "인증번호를 전송하였습니다.");
+        }
         
-        // 사용자가 없을때
-        if (optionalUser.isEmpty()) {
-            return "email-verification-failure";  // 실패 페이지
+        return retMap;
+    }
+
+    /**
+     * 인증코드를 확인한다
+     * @param requestEmailDto
+     * @return
+     */
+    @PostMapping("/verify")
+    public Map<String, Object> verifyEmail(@RequestBody RequestEmailDto requestEmailDto) throws MessagingException {
+        Optional<User> optionalUser = userRepository.findByEmail(requestEmailDto.getEmail());
+        Map<String, Object> retMap = new HashMap<>();
+
+        // Validation
+        if (!optionalUser.isEmpty()) { // 이메일 중복
+            retMap.put("succes", false);
+            retMap.put("msg", "이미 동일한 이메일이 있습니다.");
+            return retMap;
         }
 
-
-
-        User user = optionalUser.get();
-        user.setEnabled(true);  // 계정 활성화
-        user.setEmailVerificationToken(null);  // 토큰 제거
-
-        userRepository.save(user);
-
-        return "email-verification-success";  // 성공 페이지
+        emailService.sendEmail(requestEmailDto.getEmail());
+        retMap.put("succes", true);
+        retMap.put("msg", "인증번호를 전송하였습니다.");
+        return retMap;
     }
 }
