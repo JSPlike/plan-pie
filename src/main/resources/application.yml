@@ -18,8 +18,8 @@ spring:
   mail:
     host: smtp.gmail.com              # SMTP HOST
     port: 587                         # SMTP PORT (587 or 465)
-    username: happy@likelion.org
-    password: kjji ostv tkop jpgx
+    username: moter2588@gmail.com
+    password: wiscccjgftvxvpup
     properties:
       mail:
         smtp:

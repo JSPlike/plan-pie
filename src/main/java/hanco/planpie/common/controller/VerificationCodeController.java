@@ -35,7 +35,7 @@ public class VerificationCodeController {
         }
 
 
-        
+
         User user = optionalUser.get();
         user.setEnabled(true);  // 계정 활성화
         user.setEmailVerificationToken(null);  // 토큰 제거
