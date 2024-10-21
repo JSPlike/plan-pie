@@ -52,7 +52,7 @@ public class VerificationCodeController {
             retMap.put("succes", true);
             retMap.put("msg", "인증번호를 전송하였습니다.");
         }
-        
+
         return retMap;
     }
 
