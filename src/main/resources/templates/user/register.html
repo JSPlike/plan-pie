@@ -36,24 +36,25 @@
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 
                             <div style="text-align:center;">
-                                <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">등록</h5>
+                                <h5 class="fw-bold mb-3 pb-3" style="letter-spacing: 1px;">등록</h5>
                             </div>
 
-                            <div class="form-floating mb-3" style="display: flex; align-items: center;">
+                            <div class="form-floating mb-2" style="display: flex; align-items: center;">
                                 <input id="email" type="email" class="form-control" placeholder="이메일 주소">
                                 <button id="btnSendVerification" class="btn btn-outline-secondary" type="button" style="width: 200px; padding: 15px 10px 15px 10px; margin-left: 10px;">인증번호 전송</button>
                                 <label for="email">이메일 주소</label>
-                            </div>
-                            <!-- 이메일 유효성 메시지 추가 -->
-                            <div id="emailValidationMessage" class="text-danger mb-3" style="display: none;"></div>
 
-                            <div class="form-floating mb-3" style="display: flex; align-items: center;">
+                            </div>
+                            <p id="verifyMsg1" class="text-danger fs-6" style="visibility: hidden;">유효하지 않은 이메일입니다.</p>
+                            <!-- 이메일 유효성 메시지 추가 -->
+                            <!--<div id="emailValidationMessage" class="text-danger mb-3" style="display: none;"></div>-->
+
+                            <div id="divVerificationCode" class="form-floating mb-2" style="display: flex; align-items: center;">
                                 <input id="verificationCode" oninput="verifiedCodeInput(event)" type="text" class="form-control" placeholder="인증번호 입력" maxlength="6">
                                 <button id="btnVerification" class="btn btn-outline-secondary" type="button" style="width: 70px; padding: 15px 15px 15px 15px; margin-left: 10px;">확인</button>
                                 <label for="verificationCode">인증번호 입력</label>
-                                <p style="display: none;">인증되었습니다.</p>
                             </div>
-
+                            <p id="verifyMsg2" class="fs-6" style="visibility: hidden;">인증되었습니다.</p>
 
                             <hr>
 

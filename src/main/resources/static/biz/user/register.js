@@ -12,11 +12,39 @@ $('#btnRegUser').click(function() {
     });
 });
 
+// 이메일 유효성 검사
+function isValidEmail(email) {
+    let result = true;
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    result = emailPattern.test(email);
+    return result;
+}
+
+$('#btnSendVerification').click(function () {
+    if(isValidEmail($('#email').val())) {
+        $('#verifyMsg1').css('visibility', 'hidden');
+
+
+        let url = '/api/auth/sendEmail';
+        let json = {'email': $('#email').val()};
+
+        // 이메일 인증확인 전송
+        post(url, json, function(data) {
+            alert(data);
+        });
+    } else {
+        $('#verifyMsg1').css('visibility', 'visible');
+    }
+});
+
+// 이메일 인증버튼
 $('#btnVerification').click(function(){
-    const code = $('#verificationCode').val();
+    let code = $('#verificationCode').val();
 
-    if(code != null ||case code.length < 6) {
-
+    if(code == '' || code.length < 6) {
+        // 코드
+        $('#verifyMsg2').addClass('text-danger');
+        $('#verifyMsg2').text(코)
     }
 });
 

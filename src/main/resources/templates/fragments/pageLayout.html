@@ -10,8 +10,6 @@
         let params = new URLSearchParams(window.location.search);
         let page = params.get('page');
 
-        console.log('========================');
-        console.log(page);
         if(page !== null && page !== '/') {
             $.getScript(prefix + page + suffix)
                 .done(function (data){
