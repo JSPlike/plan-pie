@@ -7,17 +7,58 @@ $('#btnRegUser').click(function() {
     let json = {'email': email, 'password': password, 'confirmPassword': confirmPassword};
 
     // 회원가입요청
-    post(url, json, function(data) {
+    common.post(url, json, function(data) {
         alert(data);
     });
 });
 
-$('#btnVerification').click(function(){
-    const code = $('#verificationCode').val();
+// 이메일 유효성 검사
+function isValidEmail(email) {
+    let result = true;
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    result = emailPattern.test(email);
+    return result;
+}
 
-    if(code != null ||case code.length < 6) {
+$('#btnSendVerification').click(function () {
+    if(isValidEmail($('#email').val())) {
+        $('#verifyMsg1').css('visibility', 'hidden');
 
+
+        let url = '/api/auth/sendEmail';
+        let json = {'email': $('#email').val()};
+
+        // 이메일 인증확인 전송
+        common.post(url, json, function(data) {
+            alert(data);
+        });
+    } else {
+        $('#verifyMsg1').css('visibility', 'visible');
     }
+});
+
+// 이메일 인증버튼
+$('#btnVerification').click(function(){
+    let code = $('#verificationCode').val();
+
+    if(code == '' || code.length < 6) {
+        // 코드
+        $('#verifyMsg2').addClass('text-danger');
+        $('#verifyMsg2').text("코드길이가 유효하지 않습니다.")
+    }
+
+    let url = '/api/auth/sendEmail';
+    let json = {'email': $('#email').val()};
+
+    // 이메일 인증확인 전송
+    common.post(url, json, function(data) {
+        if(data) {
+            $('#divVerificationCode').css('display', 'none');
+
+            $('#verifyMsg2').addClass('text-success');
+            $('#verifyMsg2').text("인증되었습니다.");
+        }
+    });
 });
 
 
