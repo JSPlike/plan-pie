@@ -64,20 +64,22 @@ function toggleProfile(event) {
 }
 
 /* post 요청 API */
-function post(url, json, callbackFn) {
-    return $.ajax({
-       contentType: 'application/json; charset=utf-8',
-       type: 'post',
-       async: false,
-       dataType: 'json',
-       data: JSON.stringify(json),
-       url: url,
-       success: function success(response) {
-           callbackFn(response);
-       },
-       error: function error(xhr, status, error) {
-           console.log(status);
-       },
-    });
+const common = {
+    post: function(url, json, callbackFn) {
+        return $.ajax({
+           contentType: 'application/json; charset=utf-8',
+           type: 'post',
+           async: false,
+           dataType: 'json',
+           data: JSON.stringify(json),
+           url: url,
+           success: function success(response) {
+               callbackFn(response);
+           },
+           error: function error(xhr, status, error) {
+               console.log(status);
+           },
+        });
+    }
 }
 
