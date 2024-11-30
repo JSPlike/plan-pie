@@ -19,13 +19,18 @@ spring:
     host: smtp.gmail.com              # SMTP HOST
     port: 587                         # SMTP PORT (587 or 465)
     username: moter2588@gmail.com
-    password: wiscccjgftvxvpup
+    password: ndzz ejdw klvw owsg
     properties:
       mail:
         smtp:
           auth: true
           starttls:
             enable: true
+            required: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+        auth-code-expiration-millis: 5 * 60 * 1000
 
   # Redis
   data:
