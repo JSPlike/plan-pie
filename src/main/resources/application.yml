@@ -4,7 +4,7 @@ server:
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/pp_db
-    username: jay
+    username: postgres
     password:
     driver-class-name: org.postgresql.Driver
 
@@ -38,6 +38,9 @@ spring:
       host: localhost
       port: 6379
       duration: 600
+#jwt
+jwt:
+  secret: VrssDzpcHVNBd_096EvM321txhQGJSr52mYi2Jr4zSo
 
 # logging
 logging:

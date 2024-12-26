@@ -32,9 +32,9 @@
             <div class="col col-xl-5">
                 <div class="card" style="border-radius: 1rem;">
                     <div class="card-body p-4 p-lg-5 text-black">
-                        <form th:action="@{/api/login}" method="post">
+                        <form th:action="@{/api/user/login}" method="post">
                             <div style="text-align: center;">
-                                <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">로그인</h5>
+                                <h5 id="login-title" class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">로그인</h5>
                             </div>
 
 
@@ -49,7 +49,7 @@
                             </div>
 
                             <div class="d-grid mb-2">
-                                <button id="btnLoginUser" class="btn btn-dark btn-lg login-btn2" type="button">로그인</button>
+                                <button id="btnLoginUser" class="btn btn-dark btn-lg login-btn2" type="submit">로그인</button>
                             </div>
 
                             <div class="mb-5 pb-lg-2" >

@@ -5,6 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import java.util.Collection;
+import java.util.Collections;
 
 @Entity
 @NoArgsConstructor
@@ -31,6 +36,14 @@ public class User {
 
     private String role;
 
+    public User(User u) {
+        this.id = u.id;
+        this.email = u.email;
+        this.password = u.password;
+        this.isEnabled = u.isEnabled;
+        this.emailVerificationToken = u.emailVerificationToken;
+        this.role = u.role;
+    }
     // 매개변수가 있는 생성자
     public User(String username, String password, boolean isEnabled, String emailVerificationToken, String role) {
         this.email = username;
@@ -70,5 +83,11 @@ public class User {
     // Role setter
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public Collection<? extends GrantedAuthority> getAuthorities(User u) {
+        // 권한이 "ROLE_USER" 또는 "ROLE_ADMIN" 등으로 있을 수 있기 때문에
+        // 권한을 SimpleGrantedAuthority로 변환하여 리스트로 반환
+        return Collections.singletonList(new SimpleGrantedAuthority(u.getRole()));
     }
 }

@@ -1,14 +1,17 @@
 package hanco.planpie.user.service;
 
+import hanco.planpie.common.config.security.JwtUtils;
 import hanco.planpie.common.service.EmailService;
 import hanco.planpie.user.domain.User;
 import hanco.planpie.user.dto.RegisterUserDto;
 import hanco.planpie.user.repository.UserRepository;
 import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -17,11 +20,13 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
+    private final JwtUtils jwtUtils;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, EmailService emailService) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, EmailService emailService, JwtUtils jwtUtils) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.emailService = emailService;
+        this.jwtUtils = jwtUtils;
     }
 
     public void createDefaultUser() {
@@ -52,5 +57,33 @@ public class UserService {
         }
 
         return "Please check your email to complete the registration.";
+    }
+
+    public boolean authenticateUser(String email, String password) {
+        // check email
+        Optional<User> userOptional = userRepository.findByEmail(email);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+
+            // 비밀번호 비교 (비밀번호 암호화된 경우)
+            return passwordEncoder.matches(password, user.getPassword());
+        }
+
+        return false; // 사용자 없음
+    }
+
+    public User loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("해당 이메일을 가진 회원이 존재하지 않습니다."));
+
+        return new User(user);
+    }
+    public String accessToken(String email) {
+        User u = new User();
+        u.setUsername(email);
+        String accessToken = jwtUtils.getToken(u);
+
+        return accessToken;
     }
 }
