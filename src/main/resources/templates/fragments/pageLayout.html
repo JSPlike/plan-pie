@@ -2,7 +2,7 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-<head th:replace="~{fragments/config}" :: Config></head>
+<head th:replace="~{fragments/config} :: Config"></head>
 <script>
     $(function() {
         let prefix = '/biz/';
@@ -23,6 +23,6 @@
 </script>
 <body>
     <th:block layout:fragment="Content"></th:block>
-    <div id="commonLayer" th:include="~{fragments/layer}"></div>
+    <div id="commonLayer" th:replace="~{fragments/layer}"></div>
 </body>
 </html>

@@ -1,4 +1,4 @@
-package hanco.planpie.dto;
+package hanco.planpie.user.dto;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -32,32 +32,27 @@
             <div class="col col-xl-5">
                 <div class="card" style="border-radius: 1rem;">
                     <div class="card-body p-4 p-lg-5 text-black">
-                        <form th:action="@{/api/user/login}" method="post">
+                        <form>
                             <div style="text-align: center;">
                                 <h5 id="login-title" class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">로그인</h5>
                             </div>
 
-
                             <div class="form-floating mb-3">
-                                <input type="email" class="form-control" id="floatingInputEmail" name="email" placeholder="이메일 주소">
-                                <label for="floatingInputEmail">이메일 주소</label>
+                                <input type="email" class="form-control" id="loginEmail" name="email" placeholder="이메일 주소">
+                                <label for="loginEmail">이메일 주소</label>
                             </div>
 
                             <div class="form-floating mb-3">
-                                <input type="password" class="form-control" id="floatingPassword" name="password" placeholder="비밀번호">
-                                <label for="floatingPassword">비밀번호</label>
+                                <input type="password" class="form-control" id="loginPassword" name="password" placeholder="비밀번호">
+                                <label for="loginPassword">비밀번호</label>
                             </div>
 
                             <div class="d-grid mb-2">
-                                <button id="btnLoginUser" class="btn btn-dark btn-lg login-btn2" type="submit">로그인</button>
+                                <button id="btnLogin" class="btn btn-dark btn-lg login-btn2" type="button">로그인</button>
                             </div>
 
                             <div class="mb-5 pb-lg-2" >
-
                             </div>
-                            <!--<a class="small text-muted" href="#!">Forgot password?</a>
-                            <p class="mb-5 pb-lg-2" style="color: #393f81;">Don't have an account? <a th:href="@{/user/register}" style="color: #393f81;">Register here</a></p>
-                            -->
                             <a href="#!" class="small text-muted">Terms of use.</a>
                             <a href="#!" class="small text-muted">Privacy policy</a>
                         </form>

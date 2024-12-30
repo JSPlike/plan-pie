@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -17,7 +18,7 @@ import java.util.Collections;
 @Builder
 @AllArgsConstructor
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // 기본키
@@ -36,25 +37,49 @@ public class User {
 
     private String role;
 
-    public User(User u) {
-        this.id = u.id;
-        this.email = u.email;
-        this.password = u.password;
-        this.isEnabled = u.isEnabled;
-        this.emailVerificationToken = u.emailVerificationToken;
-        this.role = u.role;
-    }
-    // 매개변수가 있는 생성자
-    public User(String username, String password, boolean isEnabled, String emailVerificationToken, String role) {
-        this.email = username;
-        this.password = password;
-        this.isEnabled = isEnabled;
-        this.emailVerificationToken = emailVerificationToken;
-        this.role = role;
+    public User(User user) {
     }
 
+    public Collection<? extends GrantedAuthority> getAuthorities(User u) {
+        // 권한이 "ROLE_USER" 또는 "ROLE_ADMIN" 등으로 있을 수 있기 때문에
+        // 권한을 SimpleGrantedAuthority로 변환하여 리스트로 반환
+        return Collections.singletonList(new SimpleGrantedAuthority(u.getRole()));
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // 권한을 SimpleGrantedAuthority로 반환
+        return Collections.singletonList(new SimpleGrantedAuthority(role));
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
     public String getUsername() {
-        return this.email;
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true; // 계정이 만료되지 않음을 기본값으로 설정
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true; // 계정이 잠겨 있지 않음을 기본값으로 설정
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true; // 자격 증명이 만료되지 않음을 기본값으로 설정
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return isEnabled;
     }
 
     // ID setter
@@ -83,11 +108,5 @@ public class User {
     // Role setter
     public void setRole(String role) {
         this.role = role;
-    }
-
-    public Collection<? extends GrantedAuthority> getAuthorities(User u) {
-        // 권한이 "ROLE_USER" 또는 "ROLE_ADMIN" 등으로 있을 수 있기 때문에
-        // 권한을 SimpleGrantedAuthority로 변환하여 리스트로 반환
-        return Collections.singletonList(new SimpleGrantedAuthority(u.getRole()));
     }
 }

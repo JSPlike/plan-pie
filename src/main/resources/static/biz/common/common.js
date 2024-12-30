@@ -49,8 +49,6 @@ if (themeCheckbox) { // null 체크
         const newTheme = themeCheckbox.checked ? 'dark' : 'light'; // 체크된 상태에 따라 테마 설정
         applyTheme(newTheme); // 테마 적용
     });
-} else {
-    console.warn('Element #theme-checkbox not found.'); // 요소가 없을 경우 경고
 }
 
 function toggleProfile(event) {

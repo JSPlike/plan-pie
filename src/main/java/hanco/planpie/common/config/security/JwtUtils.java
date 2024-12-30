@@ -1,6 +1,7 @@
 package hanco.planpie.common.config.security;
 
 import hanco.planpie.user.domain.User;
+import hanco.planpie.user.dto.JwtTokenDto;
 import hanco.planpie.user.service.UserService;
 import io.jsonwebtoken.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,20 +22,28 @@ public class JwtUtils {
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String BEARER_PREFIX = "Bearer ";
 
-    @Value("${jwt.scret}")
+    @Value("${jwt.secret}")
     private String jwtSecret;
 
     private final UserService userService;
 
-    public String getToken(User user) {
-        String token = Jwts.builder()
+    public JwtTokenDto getToken(User user) {
+        String accessToken = Jwts.builder()
                 .setSubject(user.getEmail())  // 사용자 이메일을 Subject로 설정
                 .setIssuedAt(new Date())  // 토큰 발급 시간
-                .setExpiration(new Date(System.currentTimeMillis() + 86400000))  // 만료 시간 (24시간)
-                .claim("id", user.getEmail())
+                .setExpiration(new Date(System.currentTimeMillis() + 300000))  // 만료 시간 (24시간)
                 .signWith(SignatureAlgorithm.HS256, jwtSecret)  // HS256 알고리즘을 사용해 서명
                 .compact();
-        return token;
+        String refreshToken = Jwts.builder()
+                .setExpiration(new Date(System.currentTimeMillis() + 86400000))
+                .signWith(SignatureAlgorithm.HS256, jwtSecret)
+                .compact();
+
+        return JwtTokenDto.builder()
+                .grantType(BEARER_PREFIX)
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
     }
 
     public boolean validateToken(String token) {
