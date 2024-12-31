@@ -29,6 +29,7 @@ public class SecurityConfig{
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, HandlerMappingIntrospector introspector) throws Exception {
+        /*
         MvcRequestMatcher.Builder mvc = new MvcRequestMatcher.Builder(introspector);
         MvcRequestMatcher[] permitAllWhiteList = {
                 mvc.pattern("/biz/**"),
@@ -39,22 +40,32 @@ public class SecurityConfig{
                 mvc.pattern("/error"),
                 mvc.pattern("/"),
                 mvc.pattern("/user/**"),
-                mvc.pattern("/api/user/**")
         };
 
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers(permitAllWhiteList).permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/user/**").permitAll()
                 .requestMatchers(HttpMethod.DELETE, "/api/user/**").hasRole("ADMIN")
-                .anyRequest().permitAll()
+                .anyRequest().authenticated()
+        );
+        http.formLogin(login -> login
+                .loginPage("/user/login")
+                .defaultSuccessUrl("/", true)
+                .loginProcessingUrl("/user/login")
+                .failureUrl("/user/login?error=true")
+                .permitAll()
         );
 
         http.csrf(AbstractHttpConfigurer::disable);
-        http.formLogin(AbstractHttpConfigurer::disable);
+        //http.formLogin(AbstractHttpConfigurer::disable);
         http.logout(AbstractHttpConfigurer::disable);
 
         http.addFilterBefore(new JwtAuthenticationFilter(jwtProvider),
                 UsernamePasswordAuthenticationFilter.class);
-        /*
+
+
+         */
+
         return http
                 //.csrf(csrf -> csrf.disable())
                 //.cors(cors -> cors.disable())
@@ -66,14 +77,14 @@ public class SecurityConfig{
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 .authorizeHttpRequests(auth -> auth
-                    .requestMatchers(permitAllWhiteList).permitAll()
                     .requestMatchers(new AntPathRequestMatcher("/css/**")).permitAll()
                     .requestMatchers(new AntPathRequestMatcher("/js/**")).permitAll()
                     .requestMatchers(new AntPathRequestMatcher("/images/**")).permitAll()
                     .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
                     .requestMatchers(new AntPathRequestMatcher("/user/**")).permitAll()
                     .requestMatchers(new AntPathRequestMatcher("/api/user/**")).permitAll()
-                    .requestMatchers(HttpMethod.POST, "/api/user/**").permitAll() // POST 요청 허용
+                    .requestMatchers(HttpMethod.POST, "/api/user/**").permitAll()
+                    .requestMatchers(HttpMethod.DELETE, "/api/user/**").hasRole("ADMIN")
                     .anyRequest().authenticated()
                 )
                 .formLogin(login -> login
@@ -89,10 +100,7 @@ public class SecurityConfig{
 
                 .addFilterBefore(new JwtAuthenticationFilter(jwtProvider),
                         UsernamePasswordAuthenticationFilter.class
-                )
-                .build();
-                */
-        return http.build();
+                ).build();
     }
 
     @Bean

@@ -11,6 +11,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -47,7 +49,7 @@ public class UserService {
             user.setUsername(registerUserDto.getEmail());
             user.setPassword(passwordEncoder.encode(registerUserDto.getPassword()));
             user.setEnabled(false); // 활성화여부
-            user.setRole("USER"); // 일반 사용자
+            user.setAuthorities(new HashSet<>(List.of("USER"))); // 일반 사용자
 
             // 이메일 인증토큰
             String verificationToken = UUID.randomUUID().toString();

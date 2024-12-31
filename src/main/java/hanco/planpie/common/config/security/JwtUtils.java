@@ -62,13 +62,6 @@ public class JwtUtils {
         return false;
     }
 
-    public Authentication getAuthentication(String token) {
-        String sub = getClaims(token).getSubject();
-
-        User user = userService.loadUserByUsername(sub);
-        return new UsernamePasswordAuthenticationToken(
-                userService, token, user.getAuthorities(user));
-    }
     private Claims getClaims(String token) {
         return Jwts.parser()
                 .setSigningKey(jwtSecret)

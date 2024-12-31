@@ -11,11 +11,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.stream.Collectors;
 
 @Entity
-@NoArgsConstructor
 @Getter
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users")
 public class User implements UserDetails {
@@ -35,21 +37,32 @@ public class User implements UserDetails {
     @Column(unique = true)
     private String emailVerificationToken;
 
-    private String role;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_auth", joinColumns = @JoinColumn(name = "email"))
+    @Column(name = "authority")
+    private Collection<String> authorities = new HashSet<>();
 
     public User(User user) {
     }
 
-    public Collection<? extends GrantedAuthority> getAuthorities(User u) {
-        // 권한이 "ROLE_USER" 또는 "ROLE_ADMIN" 등으로 있을 수 있기 때문에
-        // 권한을 SimpleGrantedAuthority로 변환하여 리스트로 반환
-        return Collections.singletonList(new SimpleGrantedAuthority(u.getRole()));
+    @Builder
+    public User(String email, String password, boolean isEnabled, String emailVerificationToken, Collection<String> authorities) {
+        this.email = email;
+        this.password = password;
+        this.isEnabled = isEnabled;
+        this.emailVerificationToken = emailVerificationToken;
+        this.authorities = authorities != null ? authorities : new HashSet<>();
+    }
+
+    public void addAuthority(String authority) {
+        this.authorities.add(authority);
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // 권한을 SimpleGrantedAuthority로 반환
-        return Collections.singletonList(new SimpleGrantedAuthority(role));
+        return authorities.stream()
+                .map(authorty -> (GrantedAuthority) () -> authorty)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -105,8 +118,7 @@ public class User implements UserDetails {
         this.emailVerificationToken = emailVerificationToken;
     }
 
-    // Role setter
-    public void setRole(String role) {
-        this.role = role;
+    public void setAuthorities(Collection<String> authorities) {
+        this.authorities = authorities;
     }
 }

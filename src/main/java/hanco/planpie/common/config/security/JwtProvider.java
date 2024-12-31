@@ -1,5 +1,6 @@
 package hanco.planpie.common.config.security;
 
+import hanco.planpie.user.domain.User;
 import hanco.planpie.user.dto.JwtTokenDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -10,13 +11,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -26,13 +27,6 @@ public class JwtProvider {
     public static final String BEARER_PREFIX = "Bearer ";
     @Value("${jwt.secret}")
     private String jwtSecret;
-
-    private SecretKey key;
-
-    @PostConstruct
-    public void init() {
-        key = Keys.hmacShaKeyFor(jwtSecret.getBytes());
-    }
 
     /*
     public String getUsernameFromToken(final String token) {
@@ -149,11 +143,9 @@ public class JwtProvider {
 
 
 
-    public JwtTokenDto getToken(hanco.planpie.user.domain.User user) {
+    public JwtTokenDto getToken(User user) {
         Claims claims = Jwts.claims().setSubject(user.getEmail());
-        claims.put("id", user.getId());
-        claims.put("email", user.getEmail());
-        claims.put("role", user.getAuthorities());
+        claims.put("roles", user.getAuthorities());
 
         String accessToken = Jwts.builder()
                 .setSubject(user.getEmail())  // 사용자 이메일을 Subject로 설정
@@ -176,10 +168,6 @@ public class JwtProvider {
                 .build();
     }
 
-    public Long getUserId(String token) {
-        return parseClaims(token).get("id", Long.class);
-    }
-
     public String getUsernameFromToken(String token) {
         return Jwts.parser()
                 .setSigningKey(jwtSecret)
@@ -188,32 +176,25 @@ public class JwtProvider {
                 .getSubject();
     }
 
-    // Jwt 토큰을 복호화하여 토큰에 들어있는 정보를 꺼내는 메서드
-    public Authentication getAuthentication(String accessToken) {
-        // Jwt 토큰 복호화
-        Claims claims = parseClaims(accessToken);
+    public List<String> getAuthoritiesFromToken(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(jwtSecret)
+                .parseClaimsJws(token)
+                .getBody();
+        return (List<String>) claims.get("roles");
+    }
 
-        if (claims.get("auth") == null) {
-            throw new RuntimeException("권한 정보가 없는 토큰입니다.");
-        }
-
-        // 클레임에서 권한 정보 가져오기
-        Collection<? extends GrantedAuthority> authorities = Arrays.stream(claims.get("auth").toString().split(","))
-                .map(SimpleGrantedAuthority::new)
-                .toList();
-
-        // UserDetails 객체를 만들어서 Authentication return
-        // UserDetails: interface, User: UserDetails를 구현한 class
-        UserDetails principal = new User(claims.getSubject(), "", authorities);
-        return new UsernamePasswordAuthenticationToken(principal, "", authorities);
+    public Authentication getAuthentication(String token) {
+        String username = getUsernameFromToken(token);
+        List<String> authorities = getAuthoritiesFromToken(token);
+        User userDetails = new User(username, "", true, "", authorities);
+        return new UsernamePasswordAuthenticationToken(userDetails, "", authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
     }
 
     // 토큰 정보를 검증하는 메서드
     public boolean validateToken(String token) {
         try {
-            Jwts.parser()
-                    .setSigningKey(key)
-                    .parseClaimsJws(token);
+            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
             return true;
         } catch (SecurityException | MalformedJwtException e) {
             log.info("Invalid JWT Token", e);
@@ -226,18 +207,4 @@ public class JwtProvider {
         }
         return false;
     }
-
-
-    // accessToken
-    private Claims parseClaims(String accessToken) {
-        try {
-            return Jwts.parser()
-                    .setSigningKey(jwtSecret)
-                    .parseClaimsJws(accessToken)
-                    .getBody();
-        } catch (ExpiredJwtException e) {
-            return e.getClaims();
-        }
-    }
-
 }
