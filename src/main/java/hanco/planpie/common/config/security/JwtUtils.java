@@ -1,41 +1,53 @@
 package hanco.planpie.common.config.security;
 
-import hanco.planpie.user.domain.User;
+import hanco.planpie.user.dto.CustomUserDto;
 import hanco.planpie.user.dto.JwtTokenDto;
-import hanco.planpie.user.service.UserService;
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import java.security.Key;
 import java.util.Date;
 
 @Slf4j
 @Component
-@RequiredArgsConstructor
 public class JwtUtils {
+    private final Key key;
+    private final long accessExpiredTime;
+    private final long refreshExpiredTime;
+    @Value("${jwt.secret}")
+    private String jwtSecret;
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String BEARER_PREFIX = "Bearer ";
 
-    @Value("${jwt.secret}")
-    private String jwtSecret;
+    public JwtUtils(@Value("${jwt.secret}") String sKey, @Value("${jwt.accessExpiredTime}") long accessExpiredTime
+                                                     , @Value("${jwt.refreshExpiredTime}") long refreshExpiredTime ) {
+        this.key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(sKey));
+        this.accessExpiredTime = accessExpiredTime;
+        this.refreshExpiredTime = refreshExpiredTime;
+    }
 
-    private final UserService userService;
+    public JwtTokenDto generatorToken(CustomUserDto userDto) {
+        Claims claims = Jwts.claims();
+        claims.put("id", userDto.getId());
+        claims.put("email", userDto.getEmail());
+        claims.put("role", userDto.getRole());
 
-    public JwtTokenDto getToken(User user) {
         String accessToken = Jwts.builder()
-                .setSubject(user.getEmail())  // 사용자 이메일을 Subject로 설정
+                .setClaims(claims)
                 .setIssuedAt(new Date())  // 토큰 발급 시간
-                .setExpiration(new Date(System.currentTimeMillis() + 300000))  // 만료 시간 (24시간)
+                .setExpiration(new Date(System.currentTimeMillis() + accessExpiredTime))  // 만료 시간 (24시간)
                 .signWith(SignatureAlgorithm.HS256, jwtSecret)  // HS256 알고리즘을 사용해 서명
                 .compact();
+
         String refreshToken = Jwts.builder()
-                .setExpiration(new Date(System.currentTimeMillis() + 86400000))
+                .setClaims(claims)
+                .setExpiration(new Date(System.currentTimeMillis() + refreshExpiredTime))
                 .signWith(SignatureAlgorithm.HS256, jwtSecret)
                 .compact();
 
@@ -46,34 +58,39 @@ public class JwtUtils {
                 .build();
     }
 
+    public Long getUserId(String token) {
+        return parseClaims(token).get("id", Long.class);
+    }
+
+    public String getUserName(String token) {
+        return parseClaims(token).get("email", String.class);
+    }
+
+    public Claims parseClaims(String accessToken) {
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(accessToken)
+                    .getBody();
+        } catch (ExpiredJwtException e) {
+            return e.getClaims();
+        }
+    }
+
     public boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
-        } catch (SecurityException | MalformedJwtException e) {
-            log.error("Invalid JWT signature, 유효하지 않는 JWT 서명 입니다.");
+        } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
+            log.info("Invalid JWT Token", e);
         } catch (ExpiredJwtException e) {
-            log.error("Expired JWT token, 만료된 JWT token 입니다.");
+            log.info("Expired JWT Token", e);
         } catch (UnsupportedJwtException e) {
-            log.error("Unsupported JWT token, 지원되지 않는 JWT 토큰 입니다.");
+            log.info("Unsupported JWT Token", e);
         } catch (IllegalArgumentException e) {
-            log.error("JWT claims is empty, 잘못된 JWT 토큰 입니다.");
+            log.info("JWT claims string is empty.", e);
         }
         return false;
-    }
-
-    private Claims getClaims(String token) {
-        return Jwts.parser()
-                .setSigningKey(jwtSecret)
-                .parseClaimsJws(token)
-                .getBody(); //payload에 해당하는 부분의 정보 반환
-    }
-
-    public String getJwtFromHeader(HttpServletRequest request) {
-        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
-            return bearerToken.substring(7);
-        }
-        return null;
     }
 }

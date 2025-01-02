@@ -1,5 +1,6 @@
 package hanco.planpie.common.config.cache;
 
+import hanco.planpie.user.domain.RoleType;
 import hanco.planpie.user.domain.User;
 import hanco.planpie.user.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -30,7 +31,7 @@ public class DataInitializer implements CommandLineRunner {
                     .email("admin@planpie.com")
                     .password(encodedPassword)
                     .isEnabled(true)
-                    .authorities(new HashSet<>(List.of("ADMIN")))
+                    .role(RoleType.ADMIN)
                     .emailVerificationToken(null)  // 이메일 인증 토큰이 필요하지 않으면 null로 설정
                     .build();
 

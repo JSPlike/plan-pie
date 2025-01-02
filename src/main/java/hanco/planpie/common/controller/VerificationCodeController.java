@@ -35,10 +35,10 @@ public class VerificationCodeController {
         Map<String, Object> retMap = new HashMap<>();
 
         if(requestEmailDto != null){
-            Optional<User> optionalUser = userRepository.findByEmail(requestEmailDto.getEmail());
+            User optionalUser = userRepository.findByEmail(requestEmailDto.getEmail());
 
             // Validation
-            if (!optionalUser.isEmpty()) { // 이메일 중복
+            if (optionalUser != null) { // 이메일 중복
                 retMap.put("succes", false);
                 retMap.put("msg", "이미 동일한 이메일이 있습니다.");
                 return retMap;
@@ -60,11 +60,11 @@ public class VerificationCodeController {
      */
     @PostMapping("/verify")
     public Map<String, Object> verifyEmail(@RequestBody RequestEmailDto requestEmailDto) throws MessagingException {
-        Optional<User> optionalUser = userRepository.findByEmail(requestEmailDto.getEmail());
+        User optionalUser = userRepository.findByEmail(requestEmailDto.getEmail());
         Map<String, Object> retMap = new HashMap<>();
 
         // Validation
-        if (!optionalUser.isEmpty()) { // 이메일 중복
+        if (optionalUser != null) { // 이메일 중복
             retMap.put("succes", false);
             retMap.put("msg", "이미 동일한 이메일이 있습니다.");
             return retMap;

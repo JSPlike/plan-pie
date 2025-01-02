@@ -31,7 +31,13 @@ spring:
           timeout: 5000
           writetimeout: 5000
         auth-code-expiration-millis: 5 * 60 * 1000
-
+  web:
+    resources:
+      cache:
+        cachecontrol:
+          max-age: 3600
+          must-revalidate: true
+          no-cache: true
   # Redis
   data:
     redis:
@@ -40,7 +46,9 @@ spring:
       duration: 600
 #jwt
 jwt:
-  secret: VrssDzpcHVNBd_096EvM321txhQGJSr52mYi2Jr4zSo
+  secret: ZG6xp0zX8Pd4M9gXXtKQRTpJfhtJk2QFpHTZbwMcv6g=
+  accessExpiredTime: 300000 # 5 min
+  refreshExpiredTime: 86400000 # 1 day
 
 # logging
 logging:

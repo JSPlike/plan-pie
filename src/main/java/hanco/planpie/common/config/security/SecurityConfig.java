@@ -1,9 +1,11 @@
 package hanco.planpie.common.config.security;
 
+import hanco.planpie.user.service.CustomUserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.access.method.P;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -19,88 +21,37 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity
-public class SecurityConfig{
-    private final JwtProvider jwtProvider;
+public class SecurityConfig {
+    private final CustomUserDetailService userDetailService;
+    private final JwtUtils jwtUtils;
+
+    private static final String[] PERMITLIST = {
+            "/api/v1/user/**", "/swagger-ui/**", "/api-docs", "/swagger-ui-custom.html",
+            "/v3/api-docs/**", "/api-docs/**", "/swagger-ui.html", "/api/v1/auth/**",
+            "/static/**", "/biz/**", "/css/**", "/images/**", "/favicon.ico", "templates/**",
+            "/", "user/**", "user/login", "api/user/login", "/user/register/**"
+    };
 
     @Bean
-    MvcRequestMatcher.Builder mvc(HandlerMappingIntrospector introspector) {
-        return new MvcRequestMatcher.Builder(introspector);
-    }
-
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, HandlerMappingIntrospector introspector) throws Exception {
-        /*
-        MvcRequestMatcher.Builder mvc = new MvcRequestMatcher.Builder(introspector);
-        MvcRequestMatcher[] permitAllWhiteList = {
-                mvc.pattern("/biz/**"),
-                mvc.pattern("/css/**"),
-                mvc.pattern("/js/**"),
-                mvc.pattern("/favicon.ico"),
-                mvc.pattern("/images/**"),
-                mvc.pattern("/error"),
-                mvc.pattern("/"),
-                mvc.pattern("/user/**"),
-        };
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers(permitAllWhiteList).permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/user/**").permitAll()
-                .requestMatchers(HttpMethod.DELETE, "/api/user/**").hasRole("ADMIN")
-                .anyRequest().authenticated()
-        );
-        http.formLogin(login -> login
-                .loginPage("/user/login")
-                .defaultSuccessUrl("/", true)
-                .loginProcessingUrl("/user/login")
-                .failureUrl("/user/login?error=true")
-                .permitAll()
-        );
+                .requestMatchers(PERMITLIST).permitAll()
+                .anyRequest().permitAll());
 
+        http.httpBasic(AbstractHttpConfigurer::disable);
         http.csrf(AbstractHttpConfigurer::disable);
-        //http.formLogin(AbstractHttpConfigurer::disable);
+        http.formLogin(AbstractHttpConfigurer::disable);
         http.logout(AbstractHttpConfigurer::disable);
 
-        http.addFilterBefore(new JwtAuthenticationFilter(jwtProvider),
+        http.sessionManagement(sessionManagementConfigurer -> sessionManagementConfigurer
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        http.addFilterBefore(new JwtAuthenticationFilter(jwtUtils, userDetailService),
                 UsernamePasswordAuthenticationFilter.class);
 
 
-         */
 
-        return http
-                //.csrf(csrf -> csrf.disable())
-                //.cors(cors -> cors.disable())
-                .csrf(AbstractHttpConfigurer::disable)
-                .formLogin(AbstractHttpConfigurer::disable)
-
-                // 세션 사용X
-                .sessionManagement(sessionManagementConfigurer -> sessionManagementConfigurer
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-
-                .authorizeHttpRequests(auth -> auth
-                    .requestMatchers(new AntPathRequestMatcher("/css/**")).permitAll()
-                    .requestMatchers(new AntPathRequestMatcher("/js/**")).permitAll()
-                    .requestMatchers(new AntPathRequestMatcher("/images/**")).permitAll()
-                    .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
-                    .requestMatchers(new AntPathRequestMatcher("/user/**")).permitAll()
-                    .requestMatchers(new AntPathRequestMatcher("/api/user/**")).permitAll()
-                    .requestMatchers(HttpMethod.POST, "/api/user/**").permitAll()
-                    .requestMatchers(HttpMethod.DELETE, "/api/user/**").hasRole("ADMIN")
-                    .anyRequest().authenticated()
-                )
-                .formLogin(login -> login
-                    .loginPage("/user/login")
-                    .defaultSuccessUrl("/", true)
-                    .loginProcessingUrl("/user/login")
-                    .failureUrl("/user/login?error=true")
-                    .permitAll()
-                )
-                .logout((logoutConfig) ->
-                        logoutConfig.logoutSuccessUrl("/")
-                )
-
-                .addFilterBefore(new JwtAuthenticationFilter(jwtProvider),
-                        UsernamePasswordAuthenticationFilter.class
-                ).build();
+        return http.build();
     }
 
     @Bean

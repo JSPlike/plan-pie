@@ -1,5 +1,6 @@
 package hanco.planpie.common.config.security;
 
+import hanco.planpie.user.service.CustomUserDetailService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
@@ -11,8 +12,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -23,48 +26,44 @@ import java.io.IOException;
 
 @Slf4j
 @RequiredArgsConstructor
-public class JwtAuthenticationFilter extends GenericFilterBean {
-    private final JwtProvider jwtProvider;
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
+    private final JwtUtils jwtUtils;
+    private final CustomUserDetailService userDetailService;
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String BEARER_PREFIX = "Bearer ";
 
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+    public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-        String token = resolveToken((HttpServletRequest) request);
-        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-        String username = null;
-        log.info("token : {}, ", token);
+        String header = request.getHeader(AUTHORIZATION_HEADER);
 
-        if(token != null && jwtProvider.validateToken(token)) {
-            Authentication authentication = jwtProvider.getAuthentication(token);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        if(header != null && header.startsWith(BEARER_PREFIX)) {
+            String token = header.substring(7);
+
+            // check token validation
+            if(jwtUtils.validateToken(token)) {
+                String username = jwtUtils.getUserName(token);
+
+                UserDetails userDetails = userDetailService.loadUserByUsername(username);
+
+                if(userDetails != null) {
+                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities()
+                    );
+                    SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+                }
+            }
         }
 
         log.info("============request ::: " + request + " ==================" );
-
-        if(isLoginRequest(httpServletRequest)) {
-            chain.doFilter(request, response);
-            return;
-        } else {
-            log.error("IOException occurred: {}", "Login");
-        }
+        chain.doFilter(request, response);
     }
+
     // 무한 리다이렉트 방지
     private boolean isLoginRequest(HttpServletRequest request) {
         String uri = request.getRequestURI();
         return uri.startsWith("/user/login") || uri.startsWith("/api/user/login");
     }
 
-    // Request Header에서 토큰 정보 추출
-    private String resolveToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
-        log.info("bearerToken : {}, ", bearerToken);
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
-            return bearerToken.substring(7);
-        }
-        return null;
-    }
     private void handleException(Exception e, HttpServletResponse response) throws IOException {
         if (e instanceof IOException) {
             log.error("IOException occurred: {}", e.getMessage(), e);
