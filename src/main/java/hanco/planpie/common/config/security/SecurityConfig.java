@@ -34,6 +34,7 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable);
         http.formLogin(AbstractHttpConfigurer::disable);
         http.logout(AbstractHttpConfigurer::disable);
+
         http.sessionManagement(sessionManagementConfigurer -> sessionManagementConfigurer
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
