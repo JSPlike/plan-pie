@@ -9,6 +9,10 @@ function allowDrop(ev) {
     ev.preventDefault(); // 기본 동작 방지
 }
 
+$(document).ready(function() {
+    common.checkLoginStatus();
+});
+
 function drag(ev) {
     ev.dataTransfer.setData("text", ev.target.id); // 드래그하는 요소의 ID 저장
 }

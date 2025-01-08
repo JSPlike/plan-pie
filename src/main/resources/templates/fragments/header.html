@@ -29,18 +29,18 @@
                     <span id="theme-title">Light</span>
                 </label>
             </li>
-            <li>
+            <li id="profile-li">
                 <div class="btn-group">
                     <i class="fa-solid fa-user profile-pic" data-bs-toggle="dropdown" aria-expanded="false"></i>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="#">Edit Profile</a></li>
                         <li><a class="dropdown-item" href="#">Settings</a></li>
                         <li><a class="dropdown-item" href="#">Help</a></li>
-                        <li><a id="logout-btn" class="dropdown-item" href="#">Logout</a></li>
+                        <li><a id="logout-btn" class="dropdown-item">Logout</a></li>
                     </ul>
                 </div>
             </li>
-            <li>
+            <li id="login-li">
                 <a th:href="@{/user/login}" id="login-btn" class="login-btn">Login</a>
             </li>
         </ul>

@@ -198,6 +198,9 @@ footer.dark {
     cursor: pointer;
 }
 
+.dropdown-menu li a {
+    cursor: pointer;
+}
 /* 로그인, 등록화면에서만 사용하는 버튼 css */
 .login-btn2 {
     background-color: #4b3f35;

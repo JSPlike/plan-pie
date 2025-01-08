@@ -1,3 +1,7 @@
+$(document).ready(function() {
+    common.checkLoginStatus();
+});
+
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize FullCalendar
     var calendarEl = document.getElementById('calendar');

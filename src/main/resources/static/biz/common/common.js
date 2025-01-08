@@ -61,6 +61,8 @@ function toggleProfile(event) {
     card.style.top = `${rect.bottom}px`; // 클릭한 위치의 y좌표 (아래쪽)
 }
 
+
+
 /* post 요청 API */
 const common = {
     post: function(url, json, callbackFn) {
@@ -80,6 +82,23 @@ const common = {
                alert("Login failed. Please check your credentials.");
            },
         });
+    },
+
+    // login check
+    checkLoginStatus: function() {
+        let token = localStorage.getItem('token');
+        let parsedToken = JSON.parse(token);
+        console.log(parsedToken);
+
+        if (token) {
+            // 토큰이 있으면 로그인된 상태로 간주하고, "로그인" 버튼을 숨기고 "로그아웃" 버튼을 표시
+            $('#profile-li').show();
+            $('#login-li').hide();
+        } else {
+            // 토큰이 없으면 로그인되지 않은 상태로 간주하고, "로그인" 버튼을 표시하고 "로그아웃" 버튼을 숨김
+            $('#profile-li').hide();
+            $('#login-li').show();
+        }
     }
 }
 
