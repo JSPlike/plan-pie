@@ -53,7 +53,7 @@ public class UserService {
         return "Please check your email to complete the registration.";
     }
 
-    public String authenticateUser(LoginDto loginDto) {
+    public JwtTokenDto authenticateUser(LoginDto loginDto) {
         log.debug("=============Service authenticateUser================");
         log.debug("=============EMAIL : " + loginDto.getEmail() + "================");
         log.debug("=============PASSWORD : " + loginDto.getPassword() + "================");
@@ -74,6 +74,8 @@ public class UserService {
         // {accessToken, reflashToken}
         JwtTokenDto token = jwtUtils.generatorToken(dto);
 
-        return token.getAccessToken();
+        log.info("============================================================================");
+        log.info(token.getAccessToken());
+        return token;
     }
 }

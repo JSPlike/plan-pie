@@ -44,6 +44,10 @@ spring:
       host: localhost
       port: 6379
       duration: 600
+
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
 #jwt
 jwt:
   secret: ZG6xp0zX8Pd4M9gXXtKQRTpJfhtJk2QFpHTZbwMcv6g=
@@ -55,3 +59,4 @@ logging:
   level:
     org.hibernate.SQL: debug         # Hibernate SQL
     org.hibernate.type.descriptor.sql.BasicBinder: trace
+    org.springframework.security.web.authentication: debug

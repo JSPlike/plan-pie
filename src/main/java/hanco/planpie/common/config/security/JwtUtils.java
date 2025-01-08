@@ -5,11 +5,9 @@ import hanco.planpie.user.dto.JwtTokenDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 import java.security.Key;
 import java.util.Date;
@@ -42,24 +40,23 @@ public class JwtUtils {
                 .setClaims(claims)
                 .setIssuedAt(new Date())  // 토큰 발급 시간
                 .setExpiration(new Date(System.currentTimeMillis() + accessExpiredTime))  // 만료 시간 (24시간)
-                .signWith(SignatureAlgorithm.HS256, jwtSecret)  // HS256 알고리즘을 사용해 서명
+                .signWith(SignatureAlgorithm.HS256, key)  // HS256 알고리즘을 사용해 서명
                 .compact();
 
         String refreshToken = Jwts.builder()
                 .setClaims(claims)
                 .setExpiration(new Date(System.currentTimeMillis() + refreshExpiredTime))
-                .signWith(SignatureAlgorithm.HS256, jwtSecret)
+                .signWith(SignatureAlgorithm.HS256, key)
                 .compact();
-
+        log.info("================accessToken================");
+        log.info(accessToken);
+        log.info("================refreshToken================");
+        log.info(refreshToken);
         return JwtTokenDto.builder()
                 .grantType(BEARER_PREFIX)
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
-    }
-
-    public Long getUserId(String token) {
-        return parseClaims(token).get("id", Long.class);
     }
 
     public String getUserName(String token) {

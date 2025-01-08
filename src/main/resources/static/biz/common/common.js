@@ -75,7 +75,9 @@ const common = {
                callbackFn(response);
            },
            error: function error(xhr, status, error) {
-               console.log(status);
+               console.error("Login failed");
+               console.log("Error: " + error);
+               alert("Login failed. Please check your credentials.");
            },
         });
     }
