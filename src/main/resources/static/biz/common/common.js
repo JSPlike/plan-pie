@@ -98,7 +98,16 @@ const common = {
             // 토큰이 없으면 로그인되지 않은 상태로 간주하고, "로그인" 버튼을 표시하고 "로그아웃" 버튼을 숨김
             $('#profile-li').hide();
             $('#login-li').show();
+            //window.location.href = "/";  // 메인 화면으로 리디렉션
         }
     }
 }
+
+$('#logout-btn').click(function() {
+    console.log('logout button click!');
+    localStorage.removeItem('token');
+
+    // 로그인 상태 확인 후 UI 갱신
+    common.checkLoginStatus();
+});
 

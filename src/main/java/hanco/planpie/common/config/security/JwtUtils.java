@@ -48,10 +48,6 @@ public class JwtUtils {
                 .setExpiration(new Date(System.currentTimeMillis() + refreshExpiredTime))
                 .signWith(SignatureAlgorithm.HS256, key)
                 .compact();
-        log.info("================accessToken================");
-        log.info(accessToken);
-        log.info("================refreshToken================");
-        log.info(refreshToken);
         return JwtTokenDto.builder()
                 .grantType(BEARER_PREFIX)
                 .accessToken(accessToken)

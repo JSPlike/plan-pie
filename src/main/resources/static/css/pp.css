@@ -300,7 +300,7 @@ register-btn2:hover {
 main {
     flex: 1; /* 남은 공간을 채우도록 설정 */
     padding-top: 74px; /* 헤더 높이만큼 패딩 */
-    padding-bottom: 39px;
+    /*padding-bottom: 39px;*/
 }
 /* Footer Styles */
 .footer {
@@ -446,7 +446,7 @@ body {
 .kanban-column {
     border-radius: 8px;
     padding: 10px;
-    min-height: 600px; /* 최소 높이 설정 */
+    min-height: 650px; /* 최소 높이 설정 */
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
 }
 

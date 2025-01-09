@@ -21,7 +21,10 @@
     });
 </script>
 <body>
-    <th:block layout:fragment="Content"></th:block>
-    <div id="commonLayer" th:replace="~{fragments/layer}"></div>
+    <main id="container" class="content-container">
+        <th:block layout:fragment="Content"></th:block>
+    </main>
+
+    <div id="commonLayer" th:insert="~{fragments/layer}"></div>
 </body>
 </html>

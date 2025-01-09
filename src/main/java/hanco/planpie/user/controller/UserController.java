@@ -33,9 +33,6 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<JwtTokenDto> login(@RequestBody LoginDto loginDto) throws Exception {
-        log.info("===================Controller LOGIN START===================");
-        log.info("=============EMAIL : " + loginDto.getEmail() + "================");
-        log.info("=============PASSWORD : " + loginDto.getPassword() + "================");
         JwtTokenDto response = null;
         try {
             // 이메일과 비밀번호를 사용해 인증 (예: 사용자 서비스에서 인증 처리)

@@ -1,5 +1,6 @@
 package hanco.planpie.common.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -7,11 +8,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+@Slf4j
 @Controller
 public class PageController {
 
     @GetMapping("/movePage")
     public String movePage(@RequestParam("page") String page) {
+
+        log.info("================movePage ===== > " + page);
         return page;
     }
 
@@ -19,8 +23,10 @@ public class PageController {
     public String goHome(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         // 로그인된 사용자가 있을 경우 모델에 사용자 정보 추가
         if (userDetails != null) {
+            log.info("============username: " + userDetails.getUsername());
             model.addAttribute("username", userDetails.getUsername());
         }
+        model.addAttribute("isHome", true);
 
         return "home";
     }

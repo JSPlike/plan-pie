@@ -59,4 +59,3 @@ logging:
   level:
     org.hibernate.SQL: debug         # Hibernate SQL
     org.hibernate.type.descriptor.sql.BasicBinder: trace
-    org.springframework.security.web.authentication: debug

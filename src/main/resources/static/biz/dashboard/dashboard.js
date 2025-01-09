@@ -15,18 +15,20 @@ document.addEventListener('DOMContentLoaded', function() {
         editable: true,               // 드래그 & 드롭 허용
         events: [
             {
-                title: 'Event 1',
-                start: '2024-09-27'
+                title: '유정생일',
+                start: '2025-01-05'
             },
             {
-                title: 'Event 2',
-                start: '2024-09-28'
+                title: '저녁약속',
+                start: '2024-01-17'
             }
         ],
+        /*
         dayRender: function(info) {
             // 요일 숫자만 표시
             info.el.innerText = info.date.getDate(); // 날짜 숫자만 표시
         }
+        */
     });
     calendar.render();
 
