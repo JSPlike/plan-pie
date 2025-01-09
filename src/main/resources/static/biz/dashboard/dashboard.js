@@ -6,23 +6,38 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize FullCalendar
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
+        contentHeight: 800,
         initialView: 'dayGridMonth',  // 기본적으로 월간 보기 설정
         headerToolbar: {
             left: 'prev,next today',   // 이전, 다음, 오늘 버튼
             center: 'title',           // 제목 표시
-            right: 'dayGridMonth,timeGridWeek,timeGridDay' // 월별, 주별, 일별 버튼
+            right: 'dayGridMonth,timeGridWeek,timeGridDay,addEventButton' // 월별, 주별, 일별 버튼
+        },
+        customButtons: {
+            addEventButton: {
+                text: '+',
+                click: function () {
+                    // 버튼 클릭 시 동작 (모달 열기 등)
+                    var modal = new bootstrap.Modal(document.getElementById('newEvent'));
+                    modal.show();
+                }
+            },
+            className: 'add-event-btn'
         },
         editable: true,               // 드래그 & 드롭 허용
         events: [
             {
                 title: '유정생일',
-                start: '2025-01-05'
+                start: '2025-01-05',
+                backgroundColor : "#008000",
+                borderColor: "#fff"
             },
             {
                 title: '저녁약속',
-                start: '2024-01-17'
+                start: '2025-01-17'
             }
         ],
+
         /*
         dayRender: function(info) {
             // 요일 숫자만 표시
