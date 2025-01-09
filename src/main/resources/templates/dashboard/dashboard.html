@@ -77,21 +77,23 @@
                     <li class="todo-item">
                         <div class="form-group d-flex align-items-center">
                             <i class="fas fa-calendar-alt mr-2"></i>
-                            <input type="datetime-local" id="startDate" class="form-control">
+                            <input type="date" id="startDate" class="form-control custom-datetime">
+                            <input type="date" id="startTime" class="form-control custom-datetime">
                         </div>
                     </li>
                     <li class="todo-item">
                         <div class="form-group d-flex align-items-center">
                             <i class="fas fa-calendar-check mr-2"></i>
-                            <input type="datetime-local" id="endDate" class="form-control">
+                            <input type="date" id="endDate" class="form-control custom-datetime">
+                            <input type="date" id="endTime" class="form-control custom-datetime">
                         </div>
                     </li>
                     <li class="todo-item">
                         <!-- 종일 여부 -->
                         <div class="form-group d-flex align-items-center">
                             <i class="fas fa-clock mr-2"></i>
-                            <input type="checkbox" id="allDay" class="mr-3">
-                            <label for="allDay" class="mb-0">All Day</label>
+                            <input type="checkbox" id="allDay" class="allDayChk" checked>
+                            <label for="allDay" style="margin-left: 10px;">All Day</label>
                         </div>
                     </li>
                     <li class="todo-item">
@@ -124,10 +126,6 @@
                         </div>
                     </li>
                 </ul>
-                <div class="todo-add">
-                    <input type="text" id="new-event" class="form-control" placeholder="Add new event">
-                    <button id="add-event" class="btn btn-primary mt-2">Add Task</button>
-                </div>
             </div>
         </div>
     </div>
@@ -135,7 +133,7 @@
 
 <!-- To-Do List Modal -->
 <div class="modal fade" id="todoModal" tabindex="-1" aria-labelledby="todoModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered inert">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="todoModalLabel">To-Do</h5>
