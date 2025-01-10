@@ -396,12 +396,46 @@ body {
     width: 100%;
 }
 .dashboard-left {
-    width: 97%;
+    width: 97%; /* 기본 너비 */
+    transition: flex 0.3s ease-in-out;
 }
+/* 슬라이드 패널 스타일 */
+.slide-panel {
+    width: 0;
+    right: 0;
+    position: fixed;
+    display: flex
+    flex-direction: column;  /* 세로로 배치 */
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 15px 0px;
+    transition: width 0.3s ease-in-out;
+    flex: 0 0 25%; /* 슬라이드 패널 너비 고정 */
+    z-index: 1000;
+}
+
+.slide-panel.active {
+    width: 22%; /* 패널 활성화 시 너비 */
+}
+
+.slide-panel h3 {
+    margin-left: 10px;
+    margin-top: 0;
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;  /* 아랫쪽 경계선 */
+    width: 100%;  /* 너비를 100%로 설정 */
+    margin: 5px;
+}
+
 .dashboard-right {
     width: 3%;
     padding: 15px 0px;
-    background-color: lightgray; /* 예시 배경 */
+    border: 1px solid lightgray;
     transition: opacity 0.3s ease; /* 부드러운 숨기기 효과 */
 }
 
@@ -432,8 +466,15 @@ button.fc-addEventButton-button.fc-button {
     transition: background-color 0.2s, color 0.2s !important; /* 부드러운 전환 효과 */
 }
 
+.fc-daygrid-day-top {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
 .fc-daygrid-day-number {
     text-decoration: none !important;
+    color: #444 !important; /* 숫자 색상 */
 }
 
 button.fc-addEventButton-button.fc-button:hover {
@@ -474,10 +515,6 @@ button.fc-addEventButton-button.fc-button:hover {
     vertical-align: middle; /* 아이콘과 높이 정렬 */
 }
 
-.fc-daygrid-day-number {
-    color: #444; /* 숫자 색상 */
-}
-
 .card {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
@@ -511,6 +548,7 @@ button.fc-addEventButton-button.fc-button:hover {
     padding: 10px;
     margin-top: 10px;
 }
+
 
 /* kanban board */
 .kanban-board {
@@ -607,10 +645,21 @@ button.fc-addEventButton-button.fc-button:hover {
   color: white !important;
   background-color: #3b5998;
 }
+.form-group .form-control {
+    border: none !important;
+    border-radius: 0 !important; /* 모서리 둥글게 */
+}
+.form-group .form-control:focus {
+    border: none !important;
+    border-bottom: 1px solid #007bff !important; /* 기본 테두리 */
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.25) !important; /* 그림자 효과 */
+    outline: none !important;
+}
+
 
 .form-floating .form-control {
     border-radius: 8px; /* 모서리 둥글게 */
-    border: 2px solid #ced4da; /* 기본 테두리 */
+    border-bottom: 1px solid #ced4da; /* 기본 테두리 */
     box-shadow: none;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }

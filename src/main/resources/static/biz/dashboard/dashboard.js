@@ -3,10 +3,36 @@ $(document).ready(function() {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
+    const eventDateInput = document.getElementById('eventDate');
+    const dashboardLeft = document.querySelector('.dashboard-left');
+    const calendarGrid = document.querySelector('.fc-daygrid-day');
+    const eventTitleInput = document.getElementById('eventTitle');
+    const saveEventButton = document.getElementById('saveEvent');
+
+    // 이벤트 핸들러: 패널 열기
+    function openSlidePanel() {
+        $('#eventSlidePanel').addClass('active');
+        dashboardLeft.style.width = '75%'; // 캘린더 너비 줄이기
+        calendarGrid.style.width = '75%';
+    }
+
+    // 이벤트 핸들러: 패널 닫기
+    function closeSlidePanel() {
+        $('#eventSlidePanel').removeClass('active');
+        dashboardLeft.style.width = '97%'; // 캘린더 너비 복원
+        calendarGrid.style.width = '97%';
+    }
+
+    // 패널 닫기 버튼 이벤트
+    $('#closeSlidePanel').click(function() {
+        console.log('close button click')
+        closeSlidePanel();
+    });
+
     // Initialize FullCalendar
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
-        contentHeight: 800,
+        height: 800,
         initialView: 'dayGridMonth',  // 기본적으로 월간 보기 설정
         headerToolbar: {
             left: 'prev,next today',   // 이전, 다음, 오늘 버튼
@@ -18,11 +44,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 text: '+',
                 click: function () {
                     // 버튼 클릭 시 동작 (모달 열기 등)
-                    var modal = new bootstrap.Modal(document.getElementById('newEvent'));
-                    modal.show();
+                    //var modal = new bootstrap.Modal(document.getElementById('newEvent'));
+                    //modal.show();
+                    openSlidePanel();
                 }
             },
             className: 'add-event-btn'
+        },
+        dateClick: function (info) {
+            console.log('clicked date!')
+            console.log(info);
+            // default data
+            $('#startDate').val(info.dateStr);
+            $('#endDate').val(info.dateStr);
+            openSlidePanel();
         },
         editable: true,               // 드래그 & 드롭 허용
         events: [
@@ -46,25 +81,6 @@ document.addEventListener('DOMContentLoaded', function() {
         */
     });
     calendar.render();
-
-    // Initialize Sortable for To-Do List
-    var todoList = document.getElementById('todo-list');
-    new Sortable(todoList, {
-        animation: 150,
-        ghostClass: 'blue-background-class'
-    });
-
-    // Add new task to To-Do List
-    document.getElementById('add-todo').addEventListener('click', function() {
-        var newTodo = document.getElementById('new-todo').value;
-        if (newTodo.trim() !== '') {
-            var newTodoItem = document.createElement('li');
-            newTodoItem.className = 'todo-item';
-            newTodoItem.textContent = newTodo;
-            todoList.appendChild(newTodoItem);
-            document.getElementById('new-todo').value = ''; // Clear input field
-        }
-    });
 
     function getDefaultDateTime() {
         const now = new Date();

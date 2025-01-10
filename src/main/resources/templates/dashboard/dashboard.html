@@ -19,52 +19,101 @@
                 </div>
             </div>
 
-            <div class="dashboard-right d-flex flex-column align-items-center">
-                <!-- To-Do List Button -->
-                <!--
-                <button class="custom-add-btn" data-bs-toggle="modal" data-bs-target="#newEvent">
-                    +
-                </button>
-                -->
-                <div class="btn-group">
-                    <i class="fa-solid fa-user profile-pic" data-bs-toggle="dropdown" aria-expanded="false"></i>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Edit Profile</a></li>
-                        <li><a class="dropdown-item" href="#">Settings</a></li>
-                        <li><a class="dropdown-item" href="#">Help</a></li>
-                        <li><a id="logout-btn" class="dropdown-item">Logout</a></li>
+            <!-- 슬라이드 패널 추가 -->
+            <div id="eventSlidePanel" class="slide-panel">
+                <div class="panel-header">
+                    <div class="form-group d-flex justify-content-between align-items-center">
+                        <input type="text" class="form-control" placeholder="Title">
+                        <button id="closeSlidePanel" class="btn-close" aria-label="Close"></button>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <ul id="event-list" class="list-unstyled">
+                        <li class="todo-item">
+                            <div class="form-group d-flex align-items-center">
+                                <i class="fas fa-calendar-alt mr-2"></i>
+                                <input type="date" id="startDate" class="form-control custom-datetime">
+                                <input type="time" id="startTime" class="form-control custom-datetime">
+                            </div>
+                        </li>
+                        <li class="todo-item">
+                            <div class="form-group d-flex align-items-center">
+                                <i class="fas fa-calendar-check mr-2"></i>
+                                <input type="date" id="endDate" class="form-control custom-datetime">
+                                <input type="time" id="endTime" class="form-control custom-datetime">
+                            </div>
+                        </li>
+                        <li class="todo-item">
+                            <div class="form-group d-flex align-items-center">
+                                <i class="fas fa-clock mr-2"></i>
+                                <input type="checkbox" id="allDay" class="allDayChk" checked>
+                                <label for="allDay" style="margin-left: 10px;">All Day</label>
+                            </div>
+                        </li>
+                        <li class="todo-item">
+                            <div class="form-group d-flex align-items-center">
+                                <i class="fas fa-user-plus mr-2"></i>
+                                <input type="text" id="participants" class="form-control" placeholder="인원 이름을 입력하세요">
+                            </div>
+                        </li>
+                        <li class="todo-item">
+                            <div class="form-group d-flex align-items-center">
+                                <i class="fas fa-tags mr-2"></i>
+                                <input type="text" id="tags" class="form-control" placeholder="태그를 입력하세요">
+                            </div>
+                        </li>
+                        <li class="todo-item">
+                            <div class="form-group d-flex align-items-center">
+                                <i class="fas fa-bell mr-2"></i>
+                                <select id="notifications" class="form-control">
+                                    <option value="none">없음</option>
+                                    <option value="5min">5분 전</option>
+                                    <option value="10min">10분 전</option>
+                                    <option value="30min">30분 전</option>
+                                    <option value="1hour">1시간 전</option>
+                                    <option value="1day">하루 전</option>
+                                    <option value="1week">일주일 전</option>
+                                </select>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>
 
-
-
-            <!-- To-Do List -->
-            <!--
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h4>To-Do</h4>
-                    </div>
-                    <div class="card-body todo-container">
-                        <ul id="todo-list" class="list-unstyled">
-                            <li class="todo-item">Design new dashboard layout</li>
-                            <li class="todo-item">Fix user authentication issue</li>
-                            <li class="todo-item">Add responsive design to all pages</li>
-                        </ul>
-                        <div class="todo-add">
-                            <input type="text" id="new-todo" class="form-control" placeholder="Add new task">
-                            <button id="add-todo" class="btn btn-primary mt-2">Add Task</button>
+            <div class="dashboard-right d-flex flex-column align-items-center">
+                <ul class="list-unstyled">
+                    <li>
+                        <div class="btn-group">
+                            <i class="fa-solid fa-user profile-pic" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">Edit Profile</a></li>
+                                <li><a class="dropdown-item" href="#">Settings</a></li>
+                                <li><a class="dropdown-item" href="#">Help</a></li>
+                                <li><a id="logout-btn" class="dropdown-item">Logout</a></li>
+                            </ul>
                         </div>
-                    </div>
-                </div>
+                    </li>
+                    <li>
+                        <form id="kanbanForm" th:action="@{/movePage}" method="get">
+                            <input type="hidden" name="page" value="dashboard/kanbanboard">
+                            <a href="#" onclick="document.getElementById('kanbanForm').submit(); return false;">K</a>
+                        </form>
+                    </li>
+                    <li>
+                        <form id="calendarForm" th:action="@{/movePage}" method="get">
+                            <input type="hidden" name="page" value="dashboard/calendar">
+                            <a href="#" onclick="document.getElementById('calendarForm').submit(); return false;">C</a>
+                        </form>
+                    </li>
+                </ul>
+
             </div>
-            -->
         </div>
     </div>
 </body>
 
 <!-- New Event Modal -->
+<!--
 <div class="modal fade" id="newEvent" tabindex="-1" aria-labelledby="todoModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -89,7 +138,6 @@
                         </div>
                     </li>
                     <li class="todo-item">
-                        <!-- 종일 여부 -->
                         <div class="form-group d-flex align-items-center">
                             <i class="fas fa-clock mr-2"></i>
                             <input type="checkbox" id="allDay" class="allDayChk" checked>
@@ -97,21 +145,18 @@
                         </div>
                     </li>
                     <li class="todo-item">
-                        <!-- 인원 추가 -->
                         <div class="form-group d-flex align-items-center">
                             <i class="fas fa-user-plus mr-2"></i>
                             <input type="text" id="participants" class="form-control" placeholder="인원 이름을 입력하세요">
                         </div>
                     </li>
                     <li class="todo-item">
-                        <!-- 태그 -->
                         <div class="form-group d-flex align-items-center">
                             <i class="fas fa-tags mr-2"></i>
                             <input type="text" id="tags" class="form-control" placeholder="태그를 입력하세요">
                         </div>
                     </li>
                     <li class="todo-item">
-                        <!-- 알림 -->
                         <div class="form-group d-flex align-items-center">
                             <i class="fas fa-bell mr-2"></i>
                             <select id="notifications" class="form-control">
@@ -130,27 +175,5 @@
         </div>
     </div>
 </div>
-
-<!-- To-Do List Modal -->
-<div class="modal fade" id="todoModal" tabindex="-1" aria-labelledby="todoModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered inert">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="todoModalLabel">To-Do</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <ul id="todo-list" class="list-unstyled">
-                    <li class="todo-item">Design new dashboard layout</li>
-                    <li class="todo-item">Fix user authentication issue</li>
-                    <li class="todo-item">Add responsive design to all pages</li>
-                </ul>
-                <div class="todo-add">
-                    <input type="text" id="new-todo" class="form-control" placeholder="Add new task">
-                    <button id="add-todo" class="btn btn-primary mt-2">Add Task</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+-->
 </html>
